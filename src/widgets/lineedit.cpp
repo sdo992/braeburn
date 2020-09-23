@@ -2,6 +2,7 @@
  * Strawberry Music Player
  * This file was part of Clementine.
  * Copyright 2010, David Sansome <me@davidsansome.com>
+ * Copyright 2018-2020, Jonas Kvinge <jonas@jkvinge.net>
  *
  * Strawberry is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,19 +72,21 @@ ExtendedEditor::ExtendedEditor(QWidget *widget, int extra_right_padding, bool dr
   reset_button_->setFocusPolicy(Qt::NoFocus);
   reset_button_->hide();
 
-  widget->connect(clear_button_, SIGNAL(clicked()), widget, SLOT(clear()));
   widget->connect(clear_button_, SIGNAL(clicked()), widget, SLOT(setFocus()));
+  if (qobject_cast<QLineEdit*>(widget) || qobject_cast<QPlainTextEdit*>(widget) || qobject_cast<QSpinBox*>(widget)) {
+    widget->connect(clear_button_, SIGNAL(clicked()), widget, SLOT(clear()));
+  }
 
   UpdateButtonGeometry();
 
 }
 
-void ExtendedEditor::set_hint(const QString& hint) {
+void ExtendedEditor::set_hint(const QString &hint) {
   hint_ = hint;
   widget_->update();
 }
 
-void ExtendedEditor::set_clear_button(bool visible) {
+void ExtendedEditor::set_clear_button(const bool visible) {
   has_clear_button_ = visible;
   clear_button_->setVisible(visible);
   UpdateButtonGeometry();
@@ -93,7 +96,7 @@ bool ExtendedEditor::has_reset_button() const {
   return reset_button_->isVisible();
 }
 
-void ExtendedEditor::set_reset_button(bool visible) {
+void ExtendedEditor::set_reset_button(const bool visible) {
   reset_button_->setVisible(visible);
   UpdateButtonGeometry();
 }
@@ -161,7 +164,7 @@ LineEdit::LineEdit(QWidget *parent) : QLineEdit(parent), ExtendedEditor(this) {
   connect(this, SIGNAL(textChanged(QString)), SLOT(text_changed(QString)));
 }
 
-void LineEdit::text_changed(const QString& text) {
+void LineEdit::text_changed(const QString &text) {
 
   if (text.isEmpty()) {
     // Consider empty string as LTR
@@ -222,8 +225,26 @@ void SpinBox::resizeEvent(QResizeEvent *e) {
   Resize();
 }
 
+CheckBox::CheckBox(QWidget *parent)
+  : QCheckBox(parent), ExtendedEditor(this, 14, false)
+{
+  connect(reset_button_, SIGNAL(clicked()), SIGNAL(Reset()));
+}
+
+void CheckBox::paintEvent(QPaintEvent *e) {
+  QCheckBox::paintEvent(e);
+  Paint(this);
+}
+
+void CheckBox::resizeEvent(QResizeEvent *e) {
+  QCheckBox::resizeEvent(e);
+  Resize();
+}
+
 QString SpinBox::textFromValue(int val) const {
+
   if (val <= 0 && !hint_.isEmpty())
     return "-";
   return QSpinBox::textFromValue(val);
+
 }

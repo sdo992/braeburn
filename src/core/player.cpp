@@ -237,10 +237,11 @@ void Player::HandleLoadResult(const UrlHandler::LoadResult &result) {
   if (!item) {
     return;
   }
-  const bool has_next_row = app_->playlist_manager()->active()->next_row() != -1;
+  int next_row = app_->playlist_manager()->active()->next_row();
+  const bool has_next_row = next_row != -1;
   PlaylistItemPtr next_item;
   if (has_next_row) {
-    next_item = app_->playlist_manager()->active()->item_at(app_->playlist_manager()->active()->next_row());
+    next_item = app_->playlist_manager()->active()->item_at(next_row);
   }
 
   bool is_current(false);
@@ -322,11 +323,12 @@ void Player::HandleLoadResult(const UrlHandler::LoadResult &result) {
       if (update) {
         if (is_current) {
           item->SetTemporaryMetadata(song);
-          app_->playlist_manager()->active()->InformOfCurrentSongChange(autoscroll_);
+          app_->playlist_manager()->active()->InformOfCurrentSongChange(autoscroll_, true);
+          app_->playlist_manager()->active()->UpdateScrobblePoint();
         }
         else if (is_next) {
           next_item->SetTemporaryMetadata(song);
-          app_->playlist_manager()->active()->ItemChanged(next_item);
+          app_->playlist_manager()->active()->ItemChanged(next_row);
         }
       }
 
@@ -476,7 +478,6 @@ void Player::Stop(bool stop_after) {
 }
 
 void Player::StopAfterCurrent() {
-
   app_->playlist_manager()->active()->StopAfter(app_->playlist_manager()->active()->current_row());
 }
 
@@ -497,14 +498,14 @@ void Player::PreviousItem(const Engine::TrackChangeFlags change) {
     QDateTime now = QDateTime::currentDateTime();
     if (last_pressed_previous_.isValid() && last_pressed_previous_.secsTo(now) >= 2) {
       last_pressed_previous_ = now;
-      PlayAt(app_->playlist_manager()->active()->current_row(), change, Playlist::AutoScroll_Always, false);
+      PlayAt(app_->playlist_manager()->active()->current_row(), change, Playlist::AutoScroll_Always, false, true);
       return;
     }
     last_pressed_previous_ = now;
   }
 
   int i = app_->playlist_manager()->active()->previous_row(ignore_repeat_track);
-  app_->playlist_manager()->active()->set_current_row(i, Playlist::AutoScroll_Always);
+  app_->playlist_manager()->active()->set_current_row(i, Playlist::AutoScroll_Always, false);
   if (i == -1) {
     Stop();
     PlayAt(i, change, Playlist::AutoScroll_Always, true);
@@ -559,7 +560,7 @@ void Player::SetVolume(const int value) {
 
 int Player::GetVolume() const { return engine_->volume(); }
 
-void Player::PlayAt(const int index, Engine::TrackChangeFlags change, const Playlist::AutoScroll autoscroll, const bool reshuffle) {
+void Player::PlayAt(const int index, Engine::TrackChangeFlags change, const Playlist::AutoScroll autoscroll, const bool reshuffle, const bool force_inform) {
 
   if (current_item_ && change == Engine::Manual && engine_->position_nanosec() != engine_->length_nanosec()) {
     emit TrackSkipped(current_item_);
@@ -570,7 +571,8 @@ void Player::PlayAt(const int index, Engine::TrackChangeFlags change, const Play
   }
 
   if (reshuffle) app_->playlist_manager()->active()->ReshuffleIndices();
-  app_->playlist_manager()->active()->set_current_row(index, autoscroll);
+
+  app_->playlist_manager()->active()->set_current_row(index, autoscroll, false, force_inform);
   if (app_->playlist_manager()->active()->current_row() == -1) {
     // Maybe index didn't exist in the playlist.
     return;
@@ -589,9 +591,6 @@ void Player::PlayAt(const int index, Engine::TrackChangeFlags change, const Play
   }
   else {
     qLog(Debug) << "Playing song" << current_item_->Metadata().title() << url;
-    if (current_item_->HasTemporaryMetadata()) {
-      app_->playlist_manager()->active()->InformOfCurrentSongChange(autoscroll);
-    }
     engine_->Play(url, current_item_->Url(), change, current_item_->Metadata().has_cue(), current_item_->effective_beginning_nanosec(), current_item_->effective_end_nanosec());
   }
 
@@ -601,15 +600,6 @@ void Player::CurrentMetadataChanged(const Song &metadata) {
 
   // Those things might have changed (especially when a previously invalid song was reloaded) so we push the latest version into Engine
   engine_->RefreshMarkers(metadata.beginning_nanosec(), metadata.end_nanosec());
-
-  // Send now playing to scrobble services
-  if (app_->scrobbler()->IsEnabled() && engine_->state() == Engine::Playing) {
-    Playlist *playlist = app_->playlist_manager()->active();
-    current_item_ = playlist->current_item();
-    if (playlist && current_item_ && !playlist->nowplaying() && current_item_->Metadata() == metadata && current_item_->Metadata().is_metadata_good()) {
-      emit SendNowPlaying();
-    }
-  }
 
 }
 
@@ -629,6 +619,10 @@ void Player::SeekTo(const int seconds) {
   app_->playlist_manager()->active()->UpdateScrobblePoint(nanosec);
 
   emit Seeked(nanosec / 1000);
+
+  if (seconds == 0) {
+    app_->playlist_manager()->active()->InformOfCurrentSongChange(Playlist::AutoScroll_Maybe, false);
+  }
 
 }
 
@@ -652,13 +646,14 @@ void Player::EngineMetadataReceived(const Engine::SimpleMetaBundle &bundle) {
     return;
   }
 
-  if (app_->playlist_manager()->active()->next_row() != -1) {
-    PlaylistItemPtr next_item = app_->playlist_manager()->active()->item_at(app_->playlist_manager()->active()->next_row());
+  int next_row = app_->playlist_manager()->active()->next_row();
+  if (next_row != -1) {
+    PlaylistItemPtr next_item = app_->playlist_manager()->active()->item_at(next_row);
     if (bundle.url == next_item->Url()) {
       Song song = next_item->Metadata();
       song.MergeFromSimpleMetaBundle(bundle);
       next_item->SetTemporaryMetadata(song);
-      app_->playlist_manager()->active()->ItemChanged(next_item);
+      app_->playlist_manager()->active()->ItemChanged(next_row);
     }
   }
 
@@ -757,7 +752,11 @@ void Player::TrackAboutToEnd() {
         loading_async_ << url;
         return;
       case UrlHandler::LoadResult::TrackAvailable:
+        qLog(Debug) << "URL handler for" << result.original_url_ << "returned" << result.stream_url_;
         url = result.stream_url_;
+        Song song = next_item->Metadata();
+        song.set_stream_url(url);
+        next_item->SetTemporaryMetadata(song);
         break;
     }
   }

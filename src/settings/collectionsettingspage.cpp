@@ -88,23 +88,25 @@ CollectionSettingsPage::CollectionSettingsPage(SettingsDialog *dialog)
   connect(ui_->button_clear_disk_cache, SIGNAL(clicked()), dialog->app(), SIGNAL(ClearPixmapDiskCache()));
   connect(ui_->button_clear_disk_cache, SIGNAL(clicked()), SLOT(ClearPixmapDiskCache()));
 
+  ui_->live_scanning->hide();
+
 }
 
 CollectionSettingsPage::~CollectionSettingsPage() { delete ui_; }
 
 void CollectionSettingsPage::Add() {
 
-  QSettings settings;
-  settings.beginGroup(kSettingsGroup);
+  QSettings s;
+  s.beginGroup(kSettingsGroup);
 
-  QString path(settings.value("last_path", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString());
+  QString path(s.value("last_path", QStandardPaths::writableLocation(QStandardPaths::MusicLocation)).toString());
   path = QFileDialog::getExistingDirectory(this, tr("Add directory..."), path);
 
   if (!path.isNull()) {
     dialog()->collection_directory_model()->AddDirectory(path);
   }
 
-  settings.setValue("last_path", path);
+  s.setValue("last_path", path);
 
   set_changed();
 
@@ -147,6 +149,7 @@ void CollectionSettingsPage::Load() {
   }
 
   QSettings s;
+  if (!s.contains(kSettingsGroup)) set_changed();
 
   s.beginGroup(kSettingsGroup);
   ui_->auto_open->setChecked(s.value("auto_open", true).toBool());

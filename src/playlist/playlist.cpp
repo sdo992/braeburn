@@ -134,9 +134,12 @@ Playlist::Playlist(PlaylistBackend *backend, TaskManager *task_manager, Collecti
       special_type_(special_type),
       cancel_restore_(false),
       scrobbled_(false),
-      nowplaying_(false),
       scrobble_point_(-1),
-      editing_(-1) {
+      editing_(-1),
+      auto_sort_(false),
+      sort_column_(Column_Title),
+      sort_order_(Qt::AscendingOrder)
+      {
 
   undo_stack_->setUndoLimit(kUndoStackSize);
 
@@ -592,28 +595,31 @@ int Playlist::previous_row(const bool ignore_repeat_track) const {
 
 }
 
-void Playlist::set_current_row(const int i, const AutoScroll autoscroll, const bool is_stopping) {
+void Playlist::set_current_row(const int i, const AutoScroll autoscroll, const bool is_stopping, const bool force_inform) {
 
   QModelIndex old_current_item_index = current_item_index_;
+  QModelIndex new_current_item_index;
+  if (i != -1) new_current_item_index = QPersistentModelIndex(index(i, 0, QModelIndex()));
 
-  ClearStreamMetadata();
+  if (new_current_item_index != current_item_index_) ClearStreamMetadata();
 
-  if (next_row() != -1 && next_row() != i) {
-    PlaylistItemPtr next_item = item_at(next_row());
+  int nextrow = next_row();
+  if (nextrow != -1 && nextrow != i) {
+    PlaylistItemPtr next_item = item_at(nextrow);
     if (next_item) {
       next_item->ClearTemporaryMetadata();
-      emit dataChanged(index(next_row(), 0), index(next_row(), ColumnCount - 1));
+      emit dataChanged(index(nextrow, 0), index(nextrow, ColumnCount - 1));
     }
   }
 
-  current_item_index_ = QPersistentModelIndex(index(i, 0, QModelIndex()));
+  current_item_index_ = new_current_item_index;
 
   // if the given item is the first in the queue, remove it from the queue
-  if (current_item_index_.row() == queue_->PeekNext()) {
+  if (current_item_index_.isValid() && current_item_index_.row() == queue_->PeekNext()) {
     queue_->TakeNext();
   }
 
-  if (current_item_index_ == old_current_item_index) {
+  if (current_item_index_ == old_current_item_index && !force_inform) {
     UpdateScrobblePoint();
     return;
   }
@@ -643,7 +649,7 @@ void Playlist::set_current_row(const int i, const AutoScroll autoscroll, const b
   }
 
   if (current_item_index_.isValid() && !is_stopping) {
-    InformOfCurrentSongChange(autoscroll);
+    InformOfCurrentSongChange(autoscroll, false);
   }
 
   // The structure of a dynamic playlist is as follows:
@@ -652,26 +658,24 @@ void Playlist::set_current_row(const int i, const AutoScroll autoscroll, const b
   if (dynamic_playlist_ && current_item_index_.isValid()) {
 
     // When advancing to the next track
-    if (i > old_current_item_index.row()) {
+    if (old_current_item_index.isValid() && i > old_current_item_index.row()) {
       // Move the new item one position ahead of the last item in the history.
       MoveItemWithoutUndo(current_item_index_.row(), dynamic_history_length());
 
-      // Compute the number of new items that have to be inserted. This is not
-      // necessarily 1 because the user might have added or removed items
-      // manually. Note that the future excludes the current item.
+      // Compute the number of new items that have to be inserted
+      // This is not necessarily 1 because the user might have added or removed items manually.
+      // Note that the future excludes the current item.
       const int count = dynamic_history_length() + 1 + dynamic_playlist_->GetDynamicFuture() - items_.count();
       if (count > 0) {
         InsertDynamicItems(count);
       }
 
-      // Shrink the history, again this is not necessarily by 1, because the
-      // user might have moved items by hand.
+      // Shrink the history, again this is not necessarily by 1, because the user might have moved items by hand.
       const int remove_count = dynamic_history_length() - dynamic_playlist_->GetDynamicHistory();
       if (0 < remove_count) RemoveItemsWithoutUndo(0, remove_count);
     }
 
-    // the above actions make all commands on the undo stack invalid, so we
-    // better clear it.
+    // the above actions make all commands on the undo stack invalid, so we better clear it.
     undo_stack_->clear();
   }
 
@@ -1059,7 +1063,13 @@ void Playlist::InsertItemsWithoutUndo(const PlaylistItemList &items, const int p
   }
 
   Save();
-  ReshuffleIndices();
+
+  if (auto_sort_) {
+    sort(sort_column_, sort_order_);
+  }
+  else {
+    ReshuffleIndices();
+  }
 
 }
 
@@ -1306,6 +1316,9 @@ QString Playlist::abbreviated_column_name(const Column column) {
 }
 
 void Playlist::sort(int column, Qt::SortOrder order) {
+
+  sort_column_ = column;
+  sort_order_ = order;
 
   if (ignore_sorting_) return;
 
@@ -1595,28 +1608,10 @@ void Playlist::SetStreamMetadata(const QUrl &url, const Song &song, const bool m
 
   if (!current_item() || current_item()->Url() != url) return;
 
-  //qLog(Debug) << "Setting temporary metadata for" << url;
-
   bool update_scrobble_point = song.length_nanosec() != current_item_metadata().length_nanosec();
-
   current_item()->SetTemporaryMetadata(song);
-
-  if (minor) {
-    if (editing_ != current_item_index_.row()) {
-      emit dataChanged(index(current_item_index_.row(), 0), index(current_item_index_.row(), ColumnCount - 1));
-    }
-    // if the song is invalid, we won't play it - there's no point in informing anybody about the change
-    const Song metadata(current_item_metadata());
-    if (metadata.is_valid()) {
-      emit SongMetadataChanged(metadata);
-    }
-  }
-  else {
-    update_scrobble_point = true;
-    InformOfCurrentSongChange(AutoScroll_Never);
-  }
-
   if (update_scrobble_point) UpdateScrobblePoint();
+  InformOfCurrentSongChange(AutoScroll_Never, minor);
 
 }
 
@@ -1735,10 +1730,16 @@ void Playlist::ReloadItems(const QList<int> &rows) {
   for (int row : rows) {
     PlaylistItemPtr item = item_at(row);
 
+    Song old_metadata = item->Metadata();
+
     item->Reload();
 
     if (row == current_row()) {
-      InformOfCurrentSongChange(AutoScroll_Never);
+      const bool minor = old_metadata.title() == item->Metadata().title() &&
+                         old_metadata.albumartist() == item->Metadata().albumartist() &&
+                         old_metadata.artist() == item->Metadata().artist() &&
+                         old_metadata.album() == item->Metadata().album();
+      InformOfCurrentSongChange(AutoScroll_Never, minor);
     }
     else {
       emit dataChanged(index(row, 0), index(row, ColumnCount - 1));
@@ -1944,28 +1945,41 @@ void Playlist::QueueLayoutChanged() {
 
 }
 
+void Playlist::ItemChanged(const int row) {
+
+  QModelIndex idx = index(row, ColumnCount - 1);
+  if (idx.isValid()) {
+    emit dataChanged(index(row, 0), index(row, ColumnCount - 1));
+  }
+
+}
+
 void Playlist::ItemChanged(PlaylistItemPtr item) {
 
   for (int row = 0; row < items_.count(); ++row) {
     if (items_[row] == item) {
-      QModelIndex idx = index(row, ColumnCount - 1);
-      if (idx.isValid()) {
-        emit dataChanged(index(row, 0), index(row, ColumnCount - 1));
-      }
+      ItemChanged(row);
     }
   }
 
 }
 
-void Playlist::InformOfCurrentSongChange(const AutoScroll autoscroll) {
-
-  emit dataChanged(index(current_item_index_.row(), 0), index(current_item_index_.row(), ColumnCount - 1));
+void Playlist::InformOfCurrentSongChange(const AutoScroll autoscroll, const bool minor) {
 
   // if the song is invalid, we won't play it - there's no point in informing anybody about the change
   const Song metadata(current_item_metadata());
   if (metadata.is_valid()) {
-    emit CurrentSongChanged(metadata);
-    emit MaybeAutoscroll(autoscroll);
+    if (minor) {
+      emit SongMetadataChanged(metadata);
+      if (editing_ != current_item_index_.row()) {
+        emit dataChanged(index(current_item_index_.row(), 0), index(current_item_index_.row(), ColumnCount - 1));
+      }
+    }
+    else {
+      emit CurrentSongChanged(metadata);
+      emit MaybeAutoscroll(autoscroll);
+      emit dataChanged(index(current_item_index_.row(), 0), index(current_item_index_.row(), ColumnCount - 1));
+    }
   }
 
 }
@@ -2145,7 +2159,6 @@ void Playlist::UpdateScrobblePoint(const qint64 seek_point_nanosec) {
     }
   }
 
-  nowplaying_ = false;
   scrobbled_ = false;
 
 }

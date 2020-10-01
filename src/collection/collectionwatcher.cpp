@@ -65,7 +65,7 @@ static const char *kNoMediaFile = ".nomedia";
 static const char *kNoMusicFile = ".nomusic";
 }
 
-QStringList CollectionWatcher::sValidImages;
+QStringList CollectionWatcher::sValidImages = QStringList() << "jpg" << "png" << "gif" << "jpeg";
 
 CollectionWatcher::CollectionWatcher(Song::Source source, QObject *parent)
     : QObject(parent),
@@ -89,10 +89,6 @@ CollectionWatcher::CollectionWatcher(Song::Source source, QObject *parent)
 
   rescan_timer_->setInterval(1000);
   rescan_timer_->setSingleShot(true);
-
-  if (sValidImages.isEmpty()) {
-    sValidImages << "jpg" << "png" << "gif" << "jpeg";
-  }
 
   ReloadSettings();
 
@@ -812,7 +808,6 @@ void CollectionWatcher::ReloadSettings() {
   scan_on_startup_ = s.value("startup_scan", true).toBool();
   monitor_ = s.value("monitor", true).toBool();
   mark_songs_unavailable_ = s.value("mark_songs_unavailable", false).toBool();
-  live_scanning_ = s.value("live_scanning", false).toBool();
   QStringList filters = s.value("cover_art_patterns", QStringList() << "front" << "cover").toStringList();
   s.endGroup();
 

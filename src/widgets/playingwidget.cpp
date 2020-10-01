@@ -149,14 +149,20 @@ void PlayingWidget::Init(Application *app, AlbumCoverChoiceController *album_cov
 }
 
 void PlayingWidget::SetEnabled(bool enabled) {
+
+  if (enabled == enabled_) return;
+
   if (enabled) SetEnabled();
   else SetDisabled();
+
 }
 
 void PlayingWidget::SetEnabled() {
 
+  if (enabled_) return;
   enabled_ = true;
-  if (active_ && (!visible_ || (timeline_show_hide_->state() == QTimeLine::Running && timeline_show_hide_->currentFrame() <= 2))) {
+
+  if (active_) {
     SetVisible(true);
   }
 
@@ -164,10 +170,10 @@ void PlayingWidget::SetEnabled() {
 
 void PlayingWidget::SetDisabled() {
 
+  if (!enabled_) return;
   enabled_ = false;
-  if (visible_ || (timeline_show_hide_->state() == QTimeLine::Running && timeline_show_hide_->currentFrame() > 2 && total_height_ - timeline_show_hide_->currentFrame() <= 2)) {
-    SetVisible(false);
-  }
+
+  SetVisible(false);
 
 }
 
@@ -177,17 +183,17 @@ void PlayingWidget::SetVisible(bool visible) {
     if (timeline_show_hide_->direction() == QTimeLine::Backward && enabled_ && active_) {
       timeline_show_hide_->toggleDirection();
     }
-    if (timeline_show_hide_->direction() == QTimeLine::Forward && (!enabled_ || !active_)) {
+    else if (timeline_show_hide_->direction() == QTimeLine::Forward && (!enabled_ || !active_)) {
       timeline_show_hide_->toggleDirection();
     }
     return;
   }
 
-  if (visible == visible_) return;
-
-  timeline_show_hide_->setFrameRange(0, total_height_);
-  timeline_show_hide_->setDirection(visible ? QTimeLine::Forward : QTimeLine::Backward);
-  timeline_show_hide_->start();
+  if (visible != visible_) {
+    timeline_show_hide_->setFrameRange(0, total_height_);
+    timeline_show_hide_->setDirection(visible ? QTimeLine::Forward : QTimeLine::Backward);
+    timeline_show_hide_->start();
+  }
 
 }
 
@@ -261,6 +267,7 @@ void PlayingWidget::Stopped() {
   active_ = false;
   song_playing_ = Song();
   song_ = Song();
+  image_current_ = QImage();
   SetVisible(false);
 
 }
@@ -283,11 +290,13 @@ void PlayingWidget::SongChanged(const Song &song) {
 
 void PlayingWidget::AlbumCoverLoaded(const Song &song, const QImage &image) {
 
-  if (!playing_ || song != song_playing_ || (timeline_fade_->state() == QTimeLine::Running && image == image_original_)) return;
+  if (!playing_ || song != song_playing_ || image == image_current_) return;
 
   active_ = true;
   downloading_covers_ = false;
   song_ = song;
+  image_current_ = image;
+
   SetImage(image);
 
 }
@@ -332,8 +341,8 @@ void PlayingWidget::SetHeight(int height) {
   setMaximumHeight(height);
   update();
 
-  if (height >= total_height_) visible_ = true;
-  if (height <= 0) visible_ = false;
+  if (height >= total_height_ - 5) visible_ = true;
+  if (height <= 5) visible_ = false;
 
   if (timeline_show_hide_->state() == QTimeLine::Running) {
     if (timeline_show_hide_->direction() == QTimeLine::Backward && enabled_ && active_) {
@@ -444,9 +453,11 @@ void PlayingWidget::DrawContents(QPainter *p) {
       }
 
       // Draw the text below
-      p->translate(x_offset, height() - text_height);
-      details_->drawContents(p);
-      p->translate(-x_offset, -height() + text_height);
+      if (timeline_show_hide_->state() != QTimeLine::Running) {
+        p->translate(x_offset, height() - text_height);
+        details_->drawContents(p);
+        p->translate(-x_offset, -height() + text_height);
+      }
 
       break;
   }

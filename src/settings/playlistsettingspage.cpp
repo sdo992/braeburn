@@ -49,6 +49,8 @@ PlaylistSettingsPage::~PlaylistSettingsPage() {
 void PlaylistSettingsPage::Load() {
 
   QSettings s;
+  if (!s.contains(kSettingsGroup)) set_changed();
+
   s.beginGroup(kSettingsGroup);
 
 #ifdef Q_OS_MACOS
@@ -64,6 +66,7 @@ void PlaylistSettingsPage::Load() {
   ui_->checkbox_greyout_songs_play->setChecked(s.value("greyout_songs_play", true).toBool());
   ui_->checkbox_select_track->setChecked(s.value("select_track", false).toBool());
   ui_->checkbox_playlist_clear->setChecked(s.value("playlist_clear", true).toBool());
+  ui_->checkbox_auto_sort->setChecked(s.value("auto_sort", false).toBool());
 
   Playlist::Path path = Playlist::Path(s.value(Playlist::kPathType, Playlist::Path_Automatic).toInt());
   switch (path) {
@@ -126,6 +129,7 @@ void PlaylistSettingsPage::Save() {
   s.setValue("editmetadatainline", ui_->checkbox_editmetadatainline->isChecked());
   s.setValue(Playlist::kWriteMetadata, ui_->checkbox_writemetadata->isChecked());
   s.setValue("delete_files", ui_->checkbox_delete_files->isChecked());
+  s.setValue("auto_sort", ui_->checkbox_auto_sort->isChecked());
   s.endGroup();
 
 }

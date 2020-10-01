@@ -567,6 +567,7 @@ MainWindow::MainWindow(Application *app, SystemTrayIcon *tray_icon, OSDBase *osd
   connect(app_->player(), SIGNAL(Playing()), ui_->playlist, SLOT(ActivePlaying()));
   connect(app_->player(), SIGNAL(Stopped()), ui_->playlist, SLOT(ActiveStopped()));
 
+  connect(app_->playlist_manager(), SIGNAL(CurrentSongChanged(Song)), osd_, SLOT(SongChanged(Song)));
   connect(app_->player(), SIGNAL(Paused()), osd_, SLOT(Paused()));
   connect(app_->player(), SIGNAL(Resumed()), osd_, SLOT(Resumed()));
   connect(app_->player(), SIGNAL(Stopped()), osd_, SLOT(Stopped()));
@@ -574,7 +575,6 @@ MainWindow::MainWindow(Application *app, SystemTrayIcon *tray_icon, OSDBase *osd
   connect(app_->player(), SIGNAL(VolumeChanged(int)), osd_, SLOT(VolumeChanged(int)));
   connect(app_->player(), SIGNAL(VolumeChanged(int)), ui_->volume, SLOT(setValue(int)));
   connect(app_->player(), SIGNAL(ForceShowOSD(Song, bool)), SLOT(ForceShowOSD(Song, bool)));
-  connect(app_->player(), SIGNAL(SendNowPlaying()), SLOT(SendNowPlaying()));
 
   connect(app_->playlist_manager(), SIGNAL(CurrentSongChanged(Song)), SLOT(SongChanged(Song)));
   connect(app_->playlist_manager(), SIGNAL(CurrentSongChanged(Song)), app_->player(), SLOT(CurrentMetadataChanged(Song)));
@@ -1279,20 +1279,15 @@ void MainWindow::MediaPlaying() {
   track_position_timer_->start();
   track_slider_timer_->start();
   UpdateTrackPosition();
-  SendNowPlaying();
 
 }
 
 void MainWindow::SendNowPlaying() {
 
-  PlaylistItemPtr item(app_->player()->GetCurrentItem());
-  if (!item) return;
-
   // Send now playing to scrobble services
   Playlist *playlist = app_->playlist_manager()->active();
-  if (app_->scrobbler()->IsEnabled() && playlist && !playlist->nowplaying() && item->Metadata().is_metadata_good()) {
-    app_->scrobbler()->UpdateNowPlaying(item->Metadata());
-    playlist->set_nowplaying(true);
+  if (app_->scrobbler()->IsEnabled() && playlist && playlist->current_item() && playlist->current_item()->Metadata().is_metadata_good()) {
+    app_->scrobbler()->UpdateNowPlaying(playlist->current_item()->Metadata());
     ui_->action_love->setEnabled(true);
     ui_->button_love->setEnabled(true);
     if (tray_icon_) tray_icon_->LoveStateChanged(true);
@@ -1307,10 +1302,14 @@ void MainWindow::VolumeChanged(const int volume) {
 
 void MainWindow::SongChanged(const Song &song) {
 
+  qLog(Debug) << "Song changed to" << song.artist() << song.album() << song.title();
+
   song_playing_ = song;
   song_ = song;
   setWindowTitle(song.PrettyTitleWithArtist());
   if (tray_icon_) tray_icon_->SetProgress(0);
+
+  SendNowPlaying();
 
 }
 
@@ -1476,7 +1475,7 @@ void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
   switch (doubleclick_playlist_addmode_) {
     case BehaviourSettingsPage::PlaylistAddBehaviour_Play:
       app_->playlist_manager()->SetActiveToCurrent();
-      app_->player()->PlayAt(row, Engine::Manual, Playlist::AutoScroll_Never, true);
+      app_->player()->PlayAt(row, Engine::Manual, Playlist::AutoScroll_Never, true, true);
       break;
 
     case BehaviourSettingsPage::PlaylistAddBehaviour_Enqueue:
@@ -1583,7 +1582,7 @@ void MainWindow::UpdateTrackPosition() {
   // Send Scrobble
   if (app_->scrobbler()->IsEnabled() && item->Metadata().is_metadata_good()) {
     Playlist *playlist = app_->playlist_manager()->active();
-    if (playlist && playlist->nowplaying() && !playlist->scrobbled()) {
+    if (playlist && !playlist->scrobbled()) {
       const int scrobble_point = (playlist->scrobble_point_nanosec() / kNsecPerSec);
       if (position >= scrobble_point) {
         app_->scrobbler()->Scrobble(item->Metadata(), scrobble_point);

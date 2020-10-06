@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) Itay Grudev 2015 - 2018
+// Copyright (c) Itay Grudev 2015 - 2020
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -42,8 +42,7 @@
 class SingleCoreApplicationPrivate;
 
 /**
- * @brief The SingleCoreApplication class handles multiple instances of the same
- * Application
+ * @brief The SingleCoreApplication class handles multipe instances of the same Application
  * @see QCoreApplication
  */
 class SingleCoreApplication : public QCoreApplication {
@@ -51,7 +50,7 @@ class SingleCoreApplication : public QCoreApplication {
 
   typedef QCoreApplication app_t;
 
-public:
+ public:
   /**
    * @brief Mode of operation of SingleCoreApplication.
    * Whether the block should be user-wide or system-wide and whether the
@@ -63,11 +62,11 @@ public:
    * @enum
    */
   enum Mode {
-    User                   = 1 << 0,
-    System                 = 1 << 1,
-    SecondaryNotification  = 1 << 2,
-    ExcludeAppVersion      = 1 << 3,
-    ExcludeAppPath         = 1 << 4
+    User = 1 << 0,
+    System = 1 << 1,
+    SecondaryNotification = 1 << 2,
+    ExcludeAppVersion = 1 << 3,
+    ExcludeAppPath = 1 << 4
   };
   Q_DECLARE_FLAGS(Options, Mode)
 
@@ -89,9 +88,8 @@ public:
    * operations. It does not guarantee that the SingleCoreApplication
    * initialisation will be completed in given time, though is a good hint.
    * Usually 4*timeout would be the worst case (fail) scenario.
-   * @see See the corresponding QAPPLICATION_CLASS constructor for reference
    */
-  explicit SingleCoreApplication( int &argc, char *argv[], bool allowSecondary = false, Options options = Mode::User, int timeout = 1000 );
+  explicit SingleCoreApplication(int &argc, char *argv[], const bool allowSecondary = false, const Options options = Mode::User, const int timeout = 1000);
   ~SingleCoreApplication() override;
 
   /**
@@ -119,23 +117,36 @@ public:
   qint64 primaryPid();
 
   /**
+   * @brief Returns the username of the user running the primary instance
+   * @returns {QString}
+   */
+  QString primaryUser();
+
+  /**
+   * @brief Returns the username of the current user
+   * @returns {QString}
+   */
+  QString currentUser();
+
+  /**
    * @brief Sends a message to the primary instance. Returns true on success.
    * @param {int} timeout - Timeout for connecting
    * @returns {bool}
    * @note sendMessage() will return false if invoked from the primary
    * instance.
    */
-  bool sendMessage( QByteArray message, int timeout = 1000 );
+  bool sendMessage(QByteArray message, int timeout = 1000);
 
  signals:
   void instanceStarted();
-  void receivedMessage( quint32 instanceId, QByteArray message );
+  void receivedMessage(quint32 instanceId, QByteArray message);
 
-private:
+ private:
   SingleCoreApplicationPrivate *d_ptr;
   Q_DECLARE_PRIVATE(SingleCoreApplication)
+  void abortSafely();
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(SingleCoreApplication::Options)
 
-#endif // SINGLECOREAPPLICATION_H
+#endif  // SINGLECOREAPPLICATION_H

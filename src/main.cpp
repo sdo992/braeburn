@@ -93,7 +93,6 @@
 #include "core/systemtrayicon.h"
 #include "core/application.h"
 #include "core/networkproxyfactory.h"
-#include "core/scangiomodulepath.h"
 #ifdef HAVE_TRANSLATIONS
 #  include "core/translations.h"
 #endif
@@ -151,7 +150,9 @@ int main(int argc, char* argv[]) {
       if (options.is_empty()) {
         qLog(Info) << "Strawberry is already running - activating existing window (1)";
       }
-      core_app.sendMessage(options.Serialize(), 5000);
+      if (!core_app.sendMessage(options.Serialize(), 5000)) {
+        qLog(Error) << "Could not send message to primary instance.";
+      }
       return 0;
     }
   }
@@ -181,7 +182,9 @@ int main(int argc, char* argv[]) {
     if (options.is_empty()) {
       qLog(Info) << "Strawberry is already running - activating existing window (2)";
     }
-    a.sendMessage(options.Serialize(), 5000);
+    if (!a.sendMessage(options.Serialize(), 5000)) {
+      qLog(Error) << "Could not send message to primary instance.";
+    }
     return 0;
   }
 
@@ -280,9 +283,7 @@ int main(int argc, char* argv[]) {
 #ifdef Q_OS_MACOS
   mac::EnableFullScreen(w);
 #endif  // Q_OS_MACOS
-#ifdef HAVE_GIO
-  ScanGIOModulePath();
-#endif
+
 #ifdef HAVE_DBUS
   QObject::connect(&mpris, SIGNAL(RaiseMainWindow()), &w, SLOT(Raise()));
 #endif

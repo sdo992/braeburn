@@ -361,7 +361,7 @@ Section "Gstreamer plugins" gstreamer-plugins
   File "/oname=libgsttypefindfunctions.dll" "gstreamer-plugins\libgsttypefindfunctions.dll"
   File "/oname=libgstgio.dll" "gstreamer-plugins\libgstgio.dll"
   File "/oname=libgstdirectsound.dll" "gstreamer-plugins\libgstdirectsound.dll"
-  File "/oname=libgstwasapi.dll" "gstreamer-plugins\libgstwasapi.dll"
+  ;File "/oname=libgstwasapi.dll" "gstreamer-plugins\libgstwasapi.dll"
   File "/oname=libgstapetag.dll" "gstreamer-plugins\libgstapetag.dll"
   File "/oname=libgsticydemux.dll" "gstreamer-plugins\libgsticydemux.dll"
   File "/oname=libgstid3demux.dll" "gstreamer-plugins\libgstid3demux.dll"
@@ -400,6 +400,12 @@ Section "Start menu items" startmenu
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\strawberry.exe"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 
+SectionEnd
+
+Section "Tidal URL Scheme"
+  WriteRegStr HKCR "tidal" "URL Protocol" ""
+  WriteRegStr HKCR "tidal" "" "URL:tidal"
+  WriteRegStr HKCR 'tidal\shell\open\command' '' '"${PRODUCT_INSTALL_DIR}\strawberry.exe" "%1"'
 SectionEnd
 
 Section "Uninstaller"

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) Itay Grudev 2015 - 2018
+// Copyright (c) Itay Grudev 2015 - 2020
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -42,16 +42,15 @@
 class SingleApplicationPrivate;
 
 /**
- * @brief The SingleApplication class handles multipe instances of the same
- * Application
- * @see QCoreApplication
+ * @brief The SingleApplication class handles multipe instances of the same Application
+ * @see QApplication
  */
 class SingleApplication : public QApplication {
   Q_OBJECT
 
   typedef QApplication app_t;
 
-public:
+ public:
   /**
    * @brief Mode of operation of SingleApplication.
    * Whether the block should be user-wide or system-wide and whether the
@@ -63,11 +62,11 @@ public:
    * @enum
    */
   enum Mode {
-    User                   = 1 << 0,
-    System                 = 1 << 1,
-    SecondaryNotification  = 1 << 2,
-    ExcludeAppVersion      = 1 << 3,
-    ExcludeAppPath         = 1 << 4
+    User = 1 << 0,
+    System = 1 << 1,
+    SecondaryNotification = 1 << 2,
+    ExcludeAppVersion = 1 << 3,
+    ExcludeAppPath = 1 << 4
   };
   Q_DECLARE_FLAGS(Options, Mode)
 
@@ -91,7 +90,7 @@ public:
    * Usually 4*timeout would be the worst case (fail) scenario.
    * @see See the corresponding QAPPLICATION_CLASS constructor for reference
    */
-  explicit SingleApplication( int &argc, char *argv[], bool allowSecondary = false, Options options = Mode::User, int timeout = 1000 );
+  explicit SingleApplication(int &argc, char *argv[], bool allowSecondary = false, Options options = Mode::User, int timeout = 1000);
   ~SingleApplication() override;
 
   /**
@@ -119,24 +118,36 @@ public:
   qint64 primaryPid();
 
   /**
+   * @brief Returns the username of the user running the primary instance
+   * @returns {QString}
+   */
+  QString primaryUser();
+
+  /**
+   * @brief Returns the username of the current user
+   * @returns {QString}
+   */
+  QString currentUser();
+
+  /**
    * @brief Sends a message to the primary instance. Returns true on success.
    * @param {int} timeout - Timeout for connecting
    * @returns {bool}
    * @note sendMessage() will return false if invoked from the primary
    * instance.
    */
-  bool sendMessage( QByteArray message, int timeout = 1000 );
+  bool sendMessage(QByteArray message, int timeout = 1000);
 
  signals:
   void instanceStarted();
-  void receivedMessage( quint32 instanceId, QByteArray message );
+  void receivedMessage(quint32 instanceId, QByteArray message);
 
  private:
   SingleApplicationPrivate *d_ptr;
   Q_DECLARE_PRIVATE(SingleApplication)
-
+  void abortSafely();
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(SingleApplication::Options)
 
-#endif // SINGLEAPPLICATION_H
+#endif  // SINGLEAPPLICATION_H

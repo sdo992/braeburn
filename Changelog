@@ -2,9 +2,21 @@ Strawberry Music Player
 =======================
 ChangeLog
 
-Unreleased:
+0.8.2:
 
-  BugFixes:
+  Bugfixes:
+    * Fixed broken transition to next song for CUE files with certain audio formats (regression since version 0.6.13).
+    * Fixed all collection divider keys showing on top with some language collate settings (regression in version 0.8.1).
+    * Fixed SQL querying songs by song ID when song ID is a string.
+    * Fixed saving album covers for LMS Subsonic servers.
+    * Fixed reading song creation dates with LMS Subsonic servers.
+    * Fixed saving initial settings.
+    * Removed use of HTML in system tray icon tooltip for all desktop environments instead of just KDE and Cinnamon.
+    * (Windows) Ignore "IDirectSoundBuffer_GetStatus The operation completed successfully" false error when switching device while playing.
+
+0.8.1:
+
+  Bugfixes:
     * Fixed engine selection in backend settings with Qt 6.
     * Fixed pixelated playlist source icon for currently playing song.
     * Fixed crash when deleting queued songs from playlist.
@@ -15,10 +27,14 @@ Unreleased:
     * Fixed certain cases where "playing now" for scrobbler were sent twice.
     * Fixed album cover loaded twice for certain songs causing slugglish playing widget.
     * Fixed playing widget to draw text after album cover is fully shown.
+    * Fixed crash when trying to copy a closed playlist to a device.
+    * Fixed incorrect song source for CUE songs when added through the collection watcher.
     * Disable use of HTML in system tray tooltip on Cinnamon too.
     * Remove problematic '&' character from OSD messages.
     * (macOS) Fixed crash on exit when cover manager is open.
     * (macOS) Fixed graphical corruption.
+    * (Windows) Fixed GStreamer registry problems.
+    * (Windows) Register Tidal URL Scheme in Windows installer.
 
   Enhancements:
     * Improved playlist autoscrolling.
@@ -31,6 +47,9 @@ Unreleased:
     * Show song info and album cover in OSD on stop and pause.
     * Reshow OSD on song restart.
     * Always save initial settings.
+    * Removed use of deprecated gstreamer "low-percent" (Minimum buffer fill setting).
+    * Added buffer low and high watermark settings to backend settings.
+    * Make use of newer version of the desktop notifications service when available.
 
   New features:
     * Added setting for enabling scrobbling based on song source.
@@ -44,7 +63,7 @@ Unreleased:
 
 0.7.2:
 
-  BugFixes:
+  Bugfixes:
     * Fixed installation directory for translations.
     * Fixed collection sorting for non-ASCII characters.
     * Fixed closing connected devices on exit.

@@ -509,7 +509,7 @@ void GstEngine::HandlePipelineError(const int pipeline_id, const QString &messag
 
   if (!current_pipeline_.get() || current_pipeline_->id() != pipeline_id) return;
 
-  qLog(Error) << "Gstreamer error:" << domain << error_code << message;
+  qLog(Error) << "GStreamer error:" << domain << error_code << message;
 
   current_pipeline_.reset();
   BufferingFinished();
@@ -758,7 +758,8 @@ std::shared_ptr<GstEnginePipeline> GstEngine::CreatePipeline() {
   ret->set_equalizer_enabled(equalizer_enabled_);
   ret->set_replaygain(rg_enabled_, rg_mode_, rg_preamp_, rg_compression_);
   ret->set_buffer_duration_nanosec(buffer_duration_nanosec_);
-  ret->set_buffer_min_fill(buffer_min_fill_);
+  ret->set_buffer_low_watermark(buffer_low_watermark_);
+  ret->set_buffer_high_watermark(buffer_high_watermark_);
 
   ret->AddBufferConsumer(this);
   for (GstBufferConsumer *consumer : buffer_consumers_) {

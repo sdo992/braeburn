@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "MIME-Version: 1.0\n"
-"PO-Revision-Date: 2020-09-18 01:26-0400\n"
+"PO-Revision-Date: 2020-10-10 03:42-0400\n"
 "Last-Translator: Ács Zoltán <acszoltan111@gmail.com>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
@@ -40,7 +40,7 @@ msgstr ""
 "\n"
 "A kedvenc lejátszólisták ide lesznek elmentve"
 
-#: settings/shortcutssettingspage.cpp:330
+#: settings/shortcutssettingspage.cpp:331
 #, qt-format
 msgid ""
 " Shortcuts on %1 are usually used through GSD D-Bus and should be configured "
@@ -49,7 +49,7 @@ msgstr ""
 "A %1 gyorsbillentyűk általában a GSD D-Bus-on keresztül vannak használva, "
 "ezeket inkább a cinnamon-settings-daemon-ban kell beállítani."
 
-#: settings/shortcutssettingspage.cpp:328
+#: settings/shortcutssettingspage.cpp:329
 #, qt-format
 msgid ""
 " Shortcuts on %1 are usually used through GSD D-Bus and should be configured "
@@ -58,7 +58,7 @@ msgstr ""
 "A %1 gyorsbillentyűk általában a GSD D-Bus-on keresztül vannak használva, "
 "ezeket inkább a gnome-settings-daemon-ban kell beállítani."
 
-#: settings/shortcutssettingspage.cpp:326
+#: settings/shortcutssettingspage.cpp:327
 #, qt-format
 msgid ""
 " Shortcuts on %1 are usually used through MPRIS D-Bus and should be "
@@ -67,7 +67,7 @@ msgstr ""
 "A %1 gyorsbillentyűk általában a MPRIS D-Bus-on keresztül vannak használva, "
 "ezeket inkább a %1 beállításaiban kell beállítani."
 
-#: settings/shortcutssettingspage.cpp:332
+#: settings/shortcutssettingspage.cpp:333
 #, qt-format
 msgid " Shortcuts should be configured in %1 settings instead."
 msgstr "A gyorsbillentyűket inkább a %1 beállításaiban kell konfigurálni."
@@ -88,9 +88,9 @@ msgstr " kbit/s"
 msgid " minutes"
 msgstr " percben"
 
-#: ../build/src/ui_backendsettingspage.h:453
-#: ../build/src/ui_backendsettingspage.h:470
-#: ../build/src/ui_backendsettingspage.h:473
+#: ../build/src/ui_backendsettingspage.h:495
+#: ../build/src/ui_backendsettingspage.h:514
+#: ../build/src/ui_backendsettingspage.h:517
 msgid " ms"
 msgstr " ms"
 
@@ -142,12 +142,12 @@ msgstr "%1 előadó"
 msgid "%1 dB"
 msgstr "%1 dB"
 
-#: core/utilities.cpp:147
+#: core/utilities.cpp:151
 #, qt-format
 msgid "%1 days"
 msgstr "%1 nap"
 
-#: core/utilities.cpp:167
+#: core/utilities.cpp:171
 #, qt-format
 msgid "%1 days ago"
 msgstr "%1 nappal ezelőtt"
@@ -197,7 +197,7 @@ msgstr "%1 dal található"
 msgid "%1 songs found (showing %2)"
 msgstr ""
 
-#: core/utilities.cpp:463
+#: core/utilities.cpp:467
 #, qt-format
 msgid ""
 "%1 songs in %2 different directories selected, are you sure you want to open "
@@ -436,7 +436,7 @@ msgstr "0:00:00"
 msgid "0px"
 msgstr "0 px"
 
-#: core/utilities.cpp:147
+#: core/utilities.cpp:151
 msgid "1 day"
 msgstr "1 nap"
 
@@ -493,7 +493,7 @@ msgstr "A-Z"
 msgid "AAC"
 msgstr "AAC"
 
-#: ../build/src/ui_backendsettingspage.h:447
+#: ../build/src/ui_backendsettingspage.h:490
 msgid "ALSA plugin"
 msgstr "ALSA plugin"
 
@@ -740,10 +740,10 @@ msgstr "Másolás után…"
 msgid "Albu&m cover"
 msgstr "&Albumborító"
 
-#: core/qtsystemtrayicon.cpp:259 collection/savedgroupingmanager.cpp:88
-#: playlist/playlist.cpp:1264 organize/organizedialog.cpp:99
-#: ../build/src/ui_groupbydialog.h:186 ../build/src/ui_groupbydialog.h:208
-#: ../build/src/ui_groupbydialog.h:230 ../build/src/ui_albumcoversearcher.h:110
+#: collection/savedgroupingmanager.cpp:88 playlist/playlist.cpp:1264
+#: organize/organizedialog.cpp:99 ../build/src/ui_groupbydialog.h:186
+#: ../build/src/ui_groupbydialog.h:208 ../build/src/ui_groupbydialog.h:230
+#: ../build/src/ui_albumcoversearcher.h:110
 #: ../build/src/ui_albumcoversearcher.h:112
 #: ../build/src/ui_contextsettingspage.h:419
 #: ../build/src/ui_edittagdialog.h:707
@@ -751,7 +751,7 @@ msgstr "&Albumborító"
 msgid "Album"
 msgstr "Album"
 
-#: ../build/src/ui_backendsettingspage.h:460
+#: ../build/src/ui_backendsettingspage.h:504
 msgid "Album (ideal loudness for all tracks)"
 msgstr "Album (ideális hangerő minden számhoz)"
 
@@ -883,7 +883,7 @@ msgstr "Hozzáfűzés az aktuális lejátszólistához"
 msgid "Append to the playlist"
 msgstr "Hozzáadás a lejátszólistához"
 
-#: ../build/src/ui_backendsettingspage.h:463
+#: ../build/src/ui_backendsettingspage.h:507
 msgid "Apply compression to prevent clipping"
 msgstr "Tömörítés engedélyezése a túlvezérlés elkerülése érdekében"
 
@@ -900,10 +900,10 @@ msgstr "Biztos benne, hogy törli a \"%1\" beállítást?"
 msgid "Are you sure you want to reset this song's statistics?"
 msgstr "Biztos benne, hogy visszaállítja ennek a dalnak a statisztikáit?"
 
-#: core/qtsystemtrayicon.cpp:257 collection/savedgroupingmanager.cpp:85
-#: playlist/playlist.cpp:1263 organize/organizedialog.cpp:100
-#: ../build/src/ui_groupbydialog.h:184 ../build/src/ui_groupbydialog.h:206
-#: ../build/src/ui_groupbydialog.h:228 ../build/src/ui_albumcoversearcher.h:106
+#: collection/savedgroupingmanager.cpp:85 playlist/playlist.cpp:1263
+#: organize/organizedialog.cpp:100 ../build/src/ui_groupbydialog.h:184
+#: ../build/src/ui_groupbydialog.h:206 ../build/src/ui_groupbydialog.h:228
+#: ../build/src/ui_albumcoversearcher.h:106
 #: ../build/src/ui_albumcoversearcher.h:108 ../build/src/ui_edittagdialog.h:713
 #: ../build/src/ui_trackselectiondialog.h:209
 msgid "Artist"
@@ -931,7 +931,7 @@ msgstr "&Rákérdezés mentéskor"
 msgid "Audio format"
 msgstr "Hangformátum"
 
-#: ../build/src/ui_backendsettingspage.h:442
+#: ../build/src/ui_backendsettingspage.h:485
 msgid "Audio output"
 msgstr "Hang kimenet"
 
@@ -952,7 +952,7 @@ msgid "Authentication"
 msgstr "Hitelesítés"
 
 #: settings/coverssettingspage.cpp:270 settings/lyricssettingspage.cpp:250
-#: settings/tidalsettingspage.cpp:214 settings/qobuzsettingspage.cpp:171
+#: settings/tidalsettingspage.cpp:214 settings/qobuzsettingspage.cpp:173
 msgid "Authentication failed"
 msgstr "A hitelesítés meghiúsult"
 
@@ -1008,7 +1008,7 @@ msgstr "Átlagos bitráta"
 msgid "Average image size"
 msgstr "Átlagos képméret"
 
-#: ../build/src/ui_backendsettingspage.h:441
+#: ../build/src/ui_backendsettingspage.h:484
 msgid "Backend"
 msgstr "Backend"
 
@@ -1103,11 +1103,11 @@ msgstr "Jobbra lent"
 msgid "Browse..."
 msgstr "Tallózás…"
 
-#: ../build/src/ui_backendsettingspage.h:451
+#: ../build/src/ui_backendsettingspage.h:494
 msgid "Buffer"
 msgstr "Puffer"
 
-#: ../build/src/ui_backendsettingspage.h:452
+#: ../build/src/ui_backendsettingspage.h:496
 msgid "Buffer duration"
 msgstr "Puffer hossza"
 
@@ -1312,8 +1312,8 @@ msgstr "Zeneszerző"
 
 #: settings/subsonicsettingspage.cpp:106 settings/tidalsettingspage.cpp:156
 #: settings/tidalsettingspage.cpp:163 settings/tidalsettingspage.cpp:167
-#: settings/tidalsettingspage.cpp:171 settings/qobuzsettingspage.cpp:129
-#: settings/qobuzsettingspage.cpp:133 settings/qobuzsettingspage.cpp:137
+#: settings/tidalsettingspage.cpp:171 settings/qobuzsettingspage.cpp:131
+#: settings/qobuzsettingspage.cpp:135 settings/qobuzsettingspage.cpp:139
 msgid "Configuration incomplete"
 msgstr "A konfiguráció hiányos"
 
@@ -1381,8 +1381,12 @@ msgstr "Albumborító másolása"
 msgid "Copy to collection..."
 msgstr "Másolás a gyűjteménybe..."
 
+#: playlist/playlistlistcontainer.cpp:379
+msgid "Copy to device"
+msgstr "Másolás eszközre"
+
 #: core/mainwindow.cpp:709 context/contextalbumsview.cpp:262
-#: collection/collectionview.cpp:352 playlist/playlistlistcontainer.cpp:101
+#: collection/collectionview.cpp:352 playlist/playlistlistcontainer.cpp:104
 #: widgets/fileviewlist.cpp:50
 msgid "Copy to device..."
 msgstr "Másolás eszközre..."
@@ -1477,11 +1481,11 @@ msgstr "Borítók %1 helyről"
 msgid "Create a new playlist with files"
 msgstr "Új lejátszólista létrehozása fájlokkal"
 
-#: ../build/src/ui_backendsettingspage.h:467
+#: ../build/src/ui_backendsettingspage.h:511
 msgid "Cross-fade when changing tracks automatically"
 msgstr "Áttűnés használata számok automatikus váltásánál"
 
-#: ../build/src/ui_backendsettingspage.h:466
+#: ../build/src/ui_backendsettingspage.h:510
 msgid "Cross-fade when changing tracks manually"
 msgstr "Áttűnés használata számok kézi váltásánál"
 
@@ -1606,7 +1610,11 @@ msgstr "Hangerő csökkentése <value> százalékkal"
 msgid "Default bac&kground image"
 msgstr "A&lapértelmezett háttérkép"
 
-#: playlist/playlistlistcontainer.cpp:99
+#: ../build/src/ui_backendsettingspage.h:499
+msgid "Defaults"
+msgstr ""
+
+#: playlist/playlistlistcontainer.cpp:101
 #: ../build/src/ui_playlistlistcontainer.h:133
 msgid "Delete"
 msgstr "Törlés"
@@ -1658,7 +1666,7 @@ msgid "Details..."
 msgstr "Részletek…"
 
 #: context/contextview.cpp:184 device/giolister.cpp:189
-#: ../build/src/ui_backendsettingspage.h:445
+#: ../build/src/ui_backendsettingspage.h:488
 #: ../build/src/ui_scrobblersettingspage.h:404
 msgid "Device"
 msgstr "Eszköz"
@@ -1766,7 +1774,7 @@ msgstr "Albumborítók letöltése"
 msgid "Downloading metadata"
 msgstr "Metaadatok letöltése"
 
-#: settings/notificationssettingspage.cpp:67
+#: settings/notificationssettingspage.cpp:65
 msgid "Drag to reposition"
 msgstr "Húzza el az áthelyezéshez"
 
@@ -1855,7 +1863,7 @@ msgstr "Dalok metaadatainak szerkesztése kattintásra"
 msgid "Enable stereo balancer"
 msgstr "Hangbalansz engedélyezése"
 
-#: ../build/src/ui_backendsettingspage.h:450
+#: ../build/src/ui_backendsettingspage.h:493
 msgid "Enable volume control"
 msgstr "Hangerőszabályzás engedélyezése"
 
@@ -1875,7 +1883,7 @@ msgstr "Átkódolás minősége"
 msgid "Encoding mode"
 msgstr "Kódolási mód"
 
-#: context/contextview.cpp:183 ../build/src/ui_backendsettingspage.h:443
+#: context/contextview.cpp:183 ../build/src/ui_backendsettingspage.h:486
 msgid "Engine"
 msgstr "Motor"
 
@@ -1909,7 +1917,7 @@ msgstr "Adja meg a keresett kifejezést"
 msgid "Enter the URL of a stream:"
 msgstr "Stream URL-jének megadása:"
 
-#: playlist/playlistlistcontainer.cpp:214
+#: playlist/playlistlistcontainer.cpp:222
 msgid "Enter the name of the folder"
 msgstr "Adja meg a mappa nevét"
 
@@ -1981,7 +1989,7 @@ msgstr "Hiba történt a CDDA eszköz készre állításakor."
 msgid "Ever played"
 msgstr "Bármikor lejátszva"
 
-#: ../build/src/ui_backendsettingspage.h:468
+#: ../build/src/ui_backendsettingspage.h:512
 msgid "Except between tracks on the same album or in the same CUE sheet"
 msgstr "Kivéve az azonos albumon vagy azonos CUE fájlban lévő számok között"
 
@@ -2052,20 +2060,20 @@ msgstr "F8"
 msgid "FLAC"
 msgstr "FLAC"
 
-#: ../build/src/ui_backendsettingspage.h:471
+#: ../build/src/ui_backendsettingspage.h:515
 msgid "Fade out on pause / fade in on resume"
 msgstr "Áttűnés a szünet megnyomásakor és a folytatáskor"
 
-#: ../build/src/ui_backendsettingspage.h:465
+#: ../build/src/ui_backendsettingspage.h:509
 msgid "Fade out when stopping a track"
 msgstr "Elhalkulás szám megállításakor"
 
-#: ../build/src/ui_backendsettingspage.h:464
+#: ../build/src/ui_backendsettingspage.h:508
 msgid "Fading"
 msgstr "Elhalkulás"
 
-#: ../build/src/ui_backendsettingspage.h:469
-#: ../build/src/ui_backendsettingspage.h:472
+#: ../build/src/ui_backendsettingspage.h:513
+#: ../build/src/ui_backendsettingspage.h:516
 msgid "Fading duration"
 msgstr "Elhalkulás hossza"
 
@@ -2425,6 +2433,10 @@ msgstr "Magas"
 msgid "High (%1 fps)"
 msgstr "Magas (%1 fps)"
 
+#: ../build/src/ui_backendsettingspage.h:497
+msgid "High watermark"
+msgstr ""
+
 #: smartplaylists/smartplaylistsearchterm.cpp:432
 msgid "Hours"
 msgstr ""
@@ -2489,12 +2501,12 @@ msgstr "Adatok importálása last.fm-ből..."
 msgid "Import..."
 msgstr "Importálás..."
 
-#: core/utilities.cpp:181
+#: core/utilities.cpp:185
 #, qt-format
 msgid "In %1 days"
 msgstr "%1 napon belül"
 
-#: core/utilities.cpp:184
+#: core/utilities.cpp:188
 #, qt-format
 msgid "In %1 weeks"
 msgstr "%1 héten belül"
@@ -2620,9 +2632,8 @@ msgstr ""
 msgid "Left"
 msgstr "Bal"
 
-#: core/qtsystemtrayicon.cpp:262 context/contextview.cpp:214
-#: playlist/playlist.cpp:1267 organize/organizedialog.cpp:112
-#: ../build/src/ui_edittagdialog.h:689
+#: context/contextview.cpp:214 playlist/playlist.cpp:1267
+#: organize/organizedialog.cpp:112 ../build/src/ui_edittagdialog.h:689
 msgid "Length"
 msgstr "Időtartam"
 
@@ -2680,7 +2691,7 @@ msgstr "iPod adatbázis betöltése"
 
 #: smartplaylists/playlistgeneratorinserter.cpp:58
 msgid "Loading smart playlist"
-msgstr ""
+msgstr "Okos lejátszólista betöltése"
 
 #: collection/collectionmodel.cpp:211
 msgid "Loading songs"
@@ -2734,6 +2745,10 @@ msgstr "Alacsony (%1 fps)"
 #: ../build/src/ui_transcoderoptionsaac.h:134
 msgid "Low complexity profile (LC)"
 msgstr "Alacsony komplexitású profil (LC)"
+
+#: ../build/src/ui_backendsettingspage.h:498
+msgid "Low watermark"
+msgstr ""
 
 #: ../build/src/ui_collectionsettingspage.h:431
 msgid "Lowercase filename"
@@ -2808,13 +2823,9 @@ msgstr "Középen"
 msgid "Minimum bitrate"
 msgstr "Minimális bitráta"
 
-#: ../build/src/ui_backendsettingspage.h:454
-msgid "Minimum buffer fill"
-msgstr "Minimum puffer"
-
 #: settings/tidalsettingspage.cpp:163
 msgid "Missing API token."
-msgstr ""
+msgstr "Hiányzó API token."
 
 #: qobuz/qobuzservice.cpp:719 qobuz/qobuzstreamurlrequest.cpp:84
 msgid "Missing Qobuz app ID or secret."
@@ -2828,11 +2839,11 @@ msgstr ""
 
 #: qobuz/qobuzservice.cpp:479
 msgid "Missing Qobuz password."
-msgstr ""
+msgstr "Hiányzó Qobuz jelszó."
 
 #: qobuz/qobuzservice.cpp:475
 msgid "Missing Qobuz username."
-msgstr ""
+msgstr "Hiányzó Qobuz felhasználónév."
 
 #: subsonic/subsonicurlhandler.cpp:45
 msgid "Missing Subsonic username or password."
@@ -2860,13 +2871,13 @@ msgstr "Hiányzó Tidal jelszó."
 msgid "Missing Tidal username."
 msgstr "Hiányzó Tidal felhasználónév."
 
-#: settings/qobuzsettingspage.cpp:129
+#: settings/qobuzsettingspage.cpp:131
 msgid "Missing app id."
 msgstr ""
 
-#: settings/tidalsettingspage.cpp:171 settings/qobuzsettingspage.cpp:137
+#: settings/tidalsettingspage.cpp:171 settings/qobuzsettingspage.cpp:139
 msgid "Missing password."
-msgstr ""
+msgstr "Hiányzó jelszó."
 
 #: settings/subsonicsettingspage.cpp:106
 msgid "Missing server url, username or password."
@@ -2880,9 +2891,9 @@ msgstr "Hiányzó felhasználónév vagy jelszó."
 msgid "Missing username, please login to last.fm first!"
 msgstr "Hiányzó felhasználónév, elsőnek jelentkezzen be a last.fm-be!"
 
-#: settings/tidalsettingspage.cpp:167 settings/qobuzsettingspage.cpp:133
+#: settings/tidalsettingspage.cpp:167 settings/qobuzsettingspage.cpp:135
 msgid "Missing username."
-msgstr ""
+msgstr "Hiányzó felhasználónév."
 
 #: device/deviceproperties.cpp:175
 msgid "Model"
@@ -2911,7 +2922,7 @@ msgstr "Hangulatsáv stílusa"
 
 #: smartplaylists/smartplaylistsmodel.cpp:100
 msgid "Most played"
-msgstr ""
+msgstr "Legtöbbet játszott"
 
 #: device/giolister.cpp:188
 msgid "Mount point"
@@ -2967,14 +2978,15 @@ msgstr "Soha"
 
 #: smartplaylists/smartplaylistsmodel.cpp:88
 msgid "Never played"
-msgstr ""
+msgstr "Nem volt még lejátszva"
 
 #: ../build/src/ui_behavioursettingspage.h:297
 #: ../build/src/ui_behavioursettingspage.h:311
 msgid "Never start playing"
 msgstr "Soha ne indítsa el a lejátszást"
 
-#: playlist/playlistlistcontainer.cpp:98 playlist/playlistlistcontainer.cpp:214
+#: playlist/playlistlistcontainer.cpp:100
+#: playlist/playlistlistcontainer.cpp:222
 #: ../build/src/ui_playlistlistcontainer.h:130
 msgid "New folder"
 msgstr "Új mappa"
@@ -2989,7 +3001,7 @@ msgstr ""
 
 #: smartplaylists/smartplaylistsviewcontainer.cpp:68
 msgid "New smart playlist..."
-msgstr ""
+msgstr "Új okos lejátszólista..."
 
 #: widgets/freespacebar.cpp:69
 msgid "New songs"
@@ -3001,13 +3013,13 @@ msgstr ""
 
 #: smartplaylists/smartplaylistsmodel.cpp:69
 msgid "Newest tracks"
-msgstr ""
+msgstr "Legújabb számok"
 
 #: dialogs/edittagdialog.cpp:210 dialogs/trackselectiondialog.cpp:73
 msgid "Next"
 msgstr "Következő"
 
-#: core/utilities.cpp:182
+#: core/utilities.cpp:186
 msgid "Next week"
 msgstr "Következő héten"
 
@@ -3023,7 +3035,7 @@ msgstr "Nincsenek exportálandó borítók"
 msgid "No long blocks"
 msgstr "Hosszú blokkok nélkül"
 
-#: tidal/tidalrequest.cpp:1254 qobuz/qobuzrequest.cpp:1313
+#: tidal/tidalrequest.cpp:1256 qobuz/qobuzrequest.cpp:1318
 msgid "No match."
 msgstr "Nincs egyezés."
 
@@ -3067,7 +3079,7 @@ msgstr "Normál blokkok"
 #: qobuz/qobuzservice.cpp:505 qobuz/qobuzservice.cpp:560
 #: qobuz/qobuzservice.cpp:613
 msgid "Not authenticated with Qobuz."
-msgstr ""
+msgstr "Nincs hitelesítve a Qobuzzal."
 
 #: tidal/tidalservice.cpp:710
 msgid ""
@@ -3110,7 +3122,7 @@ msgstr "Most játszott"
 msgid "O&verwrite all"
 msgstr "&Összes felülírása"
 
-#: settings/notificationssettingspage.cpp:67
+#: settings/notificationssettingspage.cpp:65
 msgid "OSD Preview"
 msgstr "OSD Előnézet"
 
@@ -3128,7 +3140,7 @@ msgstr "Indulásnál"
 
 #: ../build/src/ui_smartplaylistquerysortpage.h:139
 msgid "Only show the first"
-msgstr ""
+msgstr "Csak az első megjelenítése"
 
 #: ../build/src/ui_appearancesettingspage.h:542
 msgid "Opacity"
@@ -3209,14 +3221,14 @@ msgstr "Eredeti megjelenés - Album"
 
 #: collection/savedgroupingmanager.cpp:103
 msgid "Original year - Album - Disc"
-msgstr ""
+msgstr "Megjelenési év - Album - Lemez"
 
 #: core/commandlineoptions.cpp:183
 msgid "Other options"
 msgstr "Egyéb beállítások"
 
 #: ../build/src/ui_albumcoverexport.h:203
-#: ../build/src/ui_backendsettingspage.h:444
+#: ../build/src/ui_backendsettingspage.h:487
 msgid "Output"
 msgstr "Kimenet"
 
@@ -3257,7 +3269,7 @@ msgid "Password"
 msgstr "Jelszó"
 
 #: core/mainwindow.cpp:1247 core/mainwindow.cpp:1721
-#: core/qtsystemtrayicon.cpp:202
+#: core/qtsystemtrayicon.cpp:190
 msgid "Pause"
 msgstr "Szünet"
 
@@ -3285,8 +3297,8 @@ msgid "Plain sidebar"
 msgstr "Egyszerű oldalsáv"
 
 #: core/mainwindow.cpp:674 core/mainwindow.cpp:1200 core/mainwindow.cpp:1229
-#: core/mainwindow.cpp:1725 core/qtsystemtrayicon.cpp:189
-#: core/qtsystemtrayicon.cpp:214
+#: core/mainwindow.cpp:1725 core/qtsystemtrayicon.cpp:177
+#: core/qtsystemtrayicon.cpp:202
 msgid "Play"
 msgstr "Lejátszás"
 
@@ -3333,8 +3345,8 @@ msgstr ""
 msgid "Player options"
 msgstr "Lejátszó beállítások"
 
-#: playlist/playlistcontainer.cpp:321 playlist/playlistlistcontainer.cpp:279
-#: playlist/playlistlistcontainer.cpp:377 playlist/playlistmanager.cpp:108
+#: playlist/playlistcontainer.cpp:321 playlist/playlistlistcontainer.cpp:287
+#: playlist/playlistlistcontainer.cpp:384 playlist/playlistmanager.cpp:108
 #: playlist/playlistmanager.cpp:186 playlist/playlistmanager.cpp:548
 #: playlist/playlisttabbar.cpp:400 ../build/src/ui_playlistsettingspage.h:158
 msgid "Playlist"
@@ -3357,6 +3369,10 @@ msgstr ""
 "%1 dal van lejátszólistában, túl nagy ahhoz, hogy visszavonja, biztosan "
 "törölni szeretné?"
 
+#: playlist/playlistlistcontainer.cpp:379
+msgid "Playlist must be open first."
+msgstr ""
+
 #: core/commandlineoptions.cpp:178
 #: ../build/src/ui_playlistsaveoptionsdialog.h:94
 msgid "Playlist options"
@@ -3364,7 +3380,7 @@ msgstr "Lejátszólista beállítások"
 
 #: smartplaylists/smartplaylistwizard.cpp:80
 msgid "Playlist type"
-msgstr ""
+msgstr "Lejátszólista típusa"
 
 #: core/mainwindow.cpp:339
 msgid "Playlists"
@@ -3395,7 +3411,7 @@ msgstr "Port"
 msgid "Position"
 msgstr "Helyzet"
 
-#: equalizer/equalizer.cpp:65 ../build/src/ui_backendsettingspage.h:462
+#: equalizer/equalizer.cpp:65 ../build/src/ui_backendsettingspage.h:506
 msgid "Pre-amp"
 msgstr "Előerősítő"
 
@@ -3495,7 +3511,7 @@ msgstr ""
 #: core/mainwindow.cpp:352 ../build/src/ui_scrobblersettingspage.h:409
 #: ../build/src/ui_qobuzsettingspage.h:270
 msgid "Qobuz"
-msgstr ""
+msgstr "Qobuz"
 
 #: ../build/src/ui_qobuzsettingspage.h:272
 msgid ""
@@ -3544,13 +3560,13 @@ msgstr "Szám hozzáadása a lejátszási sorhoz"
 msgid "QueueView"
 msgstr "Lejátszási sor nézet"
 
-#: ../build/src/ui_backendsettingspage.h:459
+#: ../build/src/ui_backendsettingspage.h:503
 msgid "Radio (equal loudness for all tracks)"
 msgstr "Rádió (egyenlő hangerő minden számhoz)"
 
 #: playlist/playlist.cpp:1294
 msgid "Rating"
-msgstr ""
+msgstr "Értékelés"
 
 #: ../build/src/ui_playlistsettingspage.h:171
 msgid "Re&lative"
@@ -3657,7 +3673,7 @@ msgstr "Törlés a lejátszólistáról"
 msgid "Remove playlist"
 msgstr "Lejátszólista eltávolítása"
 
-#: playlist/playlistlistcontainer.cpp:413
+#: playlist/playlistlistcontainer.cpp:426
 msgid "Remove playlists"
 msgstr "Lejátszólisták eltávolítása"
 
@@ -3712,11 +3728,11 @@ msgstr "Szóközök lecserélése aláhúzásjelekkel"
 msgid "Replace the playlist"
 msgstr "Lejátszólista cseréje"
 
-#: ../build/src/ui_backendsettingspage.h:456
+#: ../build/src/ui_backendsettingspage.h:500
 msgid "Replay Gain"
 msgstr "Visszhangerősítés (Replay Gain)"
 
-#: ../build/src/ui_backendsettingspage.h:458
+#: ../build/src/ui_backendsettingspage.h:502
 msgid "Replay Gain mode"
 msgstr "Visszhangerősítés módja"
 
@@ -3766,13 +3782,13 @@ msgstr "Csak a FAT fájlrendszerekben engedélyezett karakterek használata"
 msgid "Resume playback on start"
 msgstr "Lejátszás folytatása induláskor"
 
-#: subsonic/subsonicrequest.cpp:680 tidal/tidalrequest.cpp:1086
+#: subsonic/subsonicrequest.cpp:688 tidal/tidalrequest.cpp:1086
 #: qobuz/qobuzrequest.cpp:1148
 #, qt-format
 msgid "Retrieving album cover for %1 album..."
 msgstr "Albumborító lekérése %1 albumhoz..."
 
-#: subsonic/subsonicrequest.cpp:681 tidal/tidalrequest.cpp:1087
+#: subsonic/subsonicrequest.cpp:689 tidal/tidalrequest.cpp:1087
 #: qobuz/qobuzrequest.cpp:1149
 #, qt-format
 msgid "Retrieving album covers for %1 albums..."
@@ -3876,7 +3892,7 @@ msgstr "Borító mentése lemezre..."
 msgid "Save current grouping"
 msgstr "Jelenlegi csoportosítás mentése"
 
-#: playlist/playlistlistcontainer.cpp:100
+#: playlist/playlistlistcontainer.cpp:102
 msgctxt "Save playlist menu action."
 msgid "Save playlist"
 msgstr "Lejátszólista mentése"
@@ -4060,7 +4076,7 @@ msgstr "Beállítások"
 msgid "Shortcut"
 msgstr "Kombináció"
 
-#: settings/shortcutssettingspage.cpp:275
+#: settings/shortcutssettingspage.cpp:276
 #: ../build/src/ui_shortcutssettingspage.h:237
 #, qt-format
 msgid "Shortcut for %1"
@@ -4154,7 +4170,7 @@ msgstr "Megjelenítés teljes méretben..."
 msgid "Show in collection..."
 msgstr "Megjelenítés a gyűjteményben..."
 
-#: core/utilities.cpp:457 core/utilities.cpp:463
+#: core/utilities.cpp:461 core/utilities.cpp:467
 msgid "Show in file browser"
 msgstr "Megnyitás a fájlböngészőben"
 
@@ -4286,11 +4302,11 @@ msgstr "Kis oldalsáv"
 
 #: smartplaylists/smartplaylistwizard.cpp:70
 msgid "Smart playlist"
-msgstr ""
+msgstr "Okos lejátszólista"
 
 #: core/mainwindow.cpp:340
 msgid "Smart playlists"
-msgstr ""
+msgstr "Okos lejátszólisták"
 
 #: equalizer/equalizer.cpp:151
 msgid "Soft"
@@ -4333,7 +4349,7 @@ msgstr ""
 
 #: ../build/src/ui_smartplaylistquerysortpage.h:134
 msgid "Sorting"
-msgstr ""
+msgstr "Rendezés"
 
 #: playlist/playlist.cpp:1292
 msgid "Source"
@@ -4395,7 +4411,7 @@ msgstr "Leállítva"
 
 #: smartplaylists/smartplaylistsearchtermwidget.cpp:419
 msgid "Strawberry"
-msgstr ""
+msgstr "Strawberry"
 
 #: ../build/src/ui_errordialog.h:92
 msgid "Strawberry Error"
@@ -4555,7 +4571,7 @@ msgstr "Köszönet még"
 msgid "Thanks to all the other Amarok and Clementine contributors."
 msgstr "Köszönet az Amarok-hoz és a Clementine-hez hozzájárulóknak."
 
-#: settings/shortcutssettingspage.cpp:253
+#: settings/shortcutssettingspage.cpp:254
 #, qt-format
 msgid "The \"%1\" command could not be started."
 msgstr "A \"%1\" parancs nem végrehajtható."
@@ -4706,14 +4722,14 @@ msgstr ""
 msgid "Time step"
 msgstr "Léptetés ideje"
 
-#: core/qtsystemtrayicon.cpp:255 playlist/playlist.cpp:1262
-#: organize/organizedialog.cpp:98 ../build/src/ui_contextsettingspage.h:414
+#: playlist/playlist.cpp:1262 organize/organizedialog.cpp:98
+#: ../build/src/ui_contextsettingspage.h:414
 #: ../build/src/ui_edittagdialog.h:705
 #: ../build/src/ui_trackselectiondialog.h:210
 msgid "Title"
 msgstr "Cím"
 
-#: core/utilities.cpp:165 core/utilities.cpp:179
+#: core/utilities.cpp:169 core/utilities.cpp:183
 msgid "Today"
 msgstr "Ma"
 
@@ -4734,11 +4750,11 @@ msgstr "Állapot átugrása"
 msgid "Toggle visibility for the pretty on-screen-display"
 msgstr "OSD láthatóság bekapcsolása"
 
-#: core/utilities.cpp:180
+#: core/utilities.cpp:184
 msgid "Tomorrow"
 msgstr "Holnap"
 
-#: core/utilities.cpp:457
+#: core/utilities.cpp:461
 msgid "Too many songs selected."
 msgstr "Túl sok dal van kiválasztva."
 
@@ -4802,9 +4818,9 @@ msgid "Ultra wide band (UWB)"
 msgstr "Ultra szélessávú (UWB)"
 
 #: core/song.cpp:548 context/contextalbumsmodel.cpp:357
-#: collection/collectionmodel.cpp:462 collection/collectionmodel.cpp:467
-#: collection/collectionmodel.cpp:471 collection/collectionmodel.cpp:475
-#: collection/collectionmodel.cpp:479 collection/collectionmodel.cpp:1591
+#: collection/collectionmodel.cpp:463 collection/collectionmodel.cpp:468
+#: collection/collectionmodel.cpp:472 collection/collectionmodel.cpp:476
+#: collection/collectionmodel.cpp:480 collection/collectionmodel.cpp:1592
 #: collection/savedgroupingmanager.cpp:143 playlist/playlistdelegates.cpp:353
 #: playlist/playlistmanager.cpp:555 playlist/playlistmanager.cpp:556
 #: dialogs/edittagdialog.cpp:514 dialogs/edittagdialog.cpp:562
@@ -4812,8 +4828,8 @@ msgstr "Ultra szélessávú (UWB)"
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: subsonic/subsonicrequest.cpp:858 tidal/tidalrequest.cpp:1260
-#: qobuz/qobuzrequest.cpp:1319
+#: subsonic/subsonicrequest.cpp:858 tidal/tidalrequest.cpp:1262
+#: qobuz/qobuzrequest.cpp:1324
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
 
@@ -4875,7 +4891,7 @@ msgstr "OAuth használata"
 msgid "Use Qobuz settings to authenticate."
 msgstr ""
 
-#: ../build/src/ui_backendsettingspage.h:457
+#: ../build/src/ui_backendsettingspage.h:501
 msgid "Use Replay Gain metadata if it is available"
 msgstr "Visszhangerősítés metaadatok használata, ha elérhetőek"
 
@@ -4959,7 +4975,7 @@ msgstr "Felhasználói token:"
 msgid "Username"
 msgstr "Felhasználónév"
 
-#: settings/shortcutssettingspage.cpp:324
+#: settings/shortcutssettingspage.cpp:325
 #, fuzzy, qt-format
 msgid ""
 "Using X11 shortcuts on %1 is not recommended and can cause keyboard to "
@@ -4994,10 +5010,6 @@ msgstr "Verzió: %1"
 #: ../build/src/ui_albumcovermanager.h:218
 msgid "View"
 msgstr "Nézet"
-
-#: core/dbusscreensaver.cpp:37
-msgid "Visualizations"
-msgstr "Megjelenítések"
 
 #: ../build/src/ui_transcoderoptionsspeex.h:232
 msgid "Voice activity detection"
@@ -5094,11 +5106,11 @@ msgstr "Év - Album - Lemez"
 msgid "Years"
 msgstr ""
 
-#: core/utilities.cpp:166
+#: core/utilities.cpp:170
 msgid "Yesterday"
 msgstr "Tegnap"
 
-#: playlist/playlistlistcontainer.cpp:413
+#: playlist/playlistlistcontainer.cpp:426
 #, qt-format
 msgid ""
 "You are about to remove %1 playlists from your favorites, are you sure?"
@@ -5135,12 +5147,12 @@ msgstr ""
 "gyűjteményben."
 
 #: dialogs/about.cpp:126
-#, fuzzy, qt-format
+#, qt-format
 msgid ""
 "You can sponsor the author on %1. You can also make a one-time payment "
 "through %2."
 msgstr ""
-"A szerzőt támogathatja a %1-on. Egyszeri összeggel pedig a %2-n keresztül."
+"A szerzőt támogathatja a %1-on, egyszeri összeggel pedig a %2-n keresztül."
 
 #: core/songloader.cpp:134 core/songloader.cpp:139
 msgid "You need GStreamer for this URL."
@@ -5185,7 +5197,7 @@ msgstr "Az ön gyűjteménye üres!"
 
 #: smartplaylists/smartplaylistsearchterm.cpp:412
 msgid "Z-A"
-msgstr ""
+msgstr "Z-A"
 
 #: equalizer/equalizer.cpp:155
 msgid "Zero"
@@ -5272,7 +5284,7 @@ msgstr ""
 msgid "greater than"
 msgstr ""
 
-#: ../build/src/ui_backendsettingspage.h:448
+#: ../build/src/ui_backendsettingspage.h:491
 msgid "hw"
 msgstr "hw"
 
@@ -5336,7 +5348,7 @@ msgstr ""
 msgid "options"
 msgstr "beállítások"
 
-#: ../build/src/ui_backendsettingspage.h:449
+#: ../build/src/ui_backendsettingspage.h:492
 msgid "p&lughw"
 msgstr "p&lughw"
 

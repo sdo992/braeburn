@@ -431,6 +431,11 @@ void SubsonicRequest::AlbumSongsReplyReceived(QNetworkReply *reply, const QStrin
   }
   QJsonArray array_songs = json_song.toArray();
 
+  qint64 created = 0;
+  if (obj_album.contains("created")) {
+    created = QDateTime::fromString(obj_album["created"].toString(), Qt::ISODate).toSecsSinceEpoch();
+  }
+
   bool compilation = false;
   bool multidisc = false;
   SongList songs;
@@ -445,7 +450,7 @@ void SubsonicRequest::AlbumSongsReplyReceived(QNetworkReply *reply, const QStrin
 
     ++songs_received;
     Song song(Song::Source_Subsonic);
-    ParseSong(song, obj_song, artist_id, album_id, album_artist);
+    ParseSong(song, obj_song, artist_id, album_id, album_artist, created);
     if (!song.is_valid()) continue;
     if (song.disc() >= 2) multidisc = true;
     if (song.is_compilation()) compilation = true;
@@ -486,7 +491,7 @@ void SubsonicRequest::SongsFinishCheck() {
 
 }
 
-QString SubsonicRequest::ParseSong(Song &song, const QJsonObject &json_obj, const QString &artist_id_requested, const QString &album_id_requested, const QString &album_artist) {
+QString SubsonicRequest::ParseSong(Song &song, const QJsonObject &json_obj, const QString &artist_id_requested, const QString &album_id_requested, const QString &album_artist, const qint64 album_created) {
 
   Q_UNUSED(artist_id_requested);
   Q_UNUSED(album_id_requested);
@@ -620,6 +625,9 @@ QString SubsonicRequest::ParseSong(Song &song, const QJsonObject &json_obj, cons
   if (json_obj.contains("created")) {
     created = QDateTime::fromString(json_obj["created"].toString(), Qt::ISODate).toSecsSinceEpoch();
   }
+  else {
+    created = album_created;
+  }
 
   QUrl url;
   url.setScheme(url_handler_->scheme());
@@ -703,7 +711,7 @@ void SubsonicRequest::AddAlbumCoverRequest(Song &song) {
   AlbumCoverRequest request;
   request.album_id = song.album_id();
   request.url = cover_url;
-  request.filename = cover_path + "/" + cover_url_query.queryItemValue("id");
+  request.filename = cover_path + "/" + cover_url_query.queryItemValue("id") + ".jpg";
   if (request.filename.isEmpty()) return;
 
   album_covers_requests_sent_.insert(cover_url, &song);
@@ -780,39 +788,37 @@ void SubsonicRequest::AlbumCoverReceived(QNetworkReply *reply, const QUrl url, c
   }
 
   QString mimetype = reply->header(QNetworkRequest::ContentTypeHeader).toString();
-  if (!QImageReader::supportedMimeTypes().contains(mimetype.toUtf8())) {
+  if (!Utilities::SupportedImageMimeTypes().contains(mimetype, Qt::CaseInsensitive) && !Utilities::SupportedImageFormats().contains(mimetype, Qt::CaseInsensitive)) {
     Error(QString("Unsupported mimetype for image reader %1 for %2").arg(mimetype).arg(url.toString()));
     if (album_covers_requests_sent_.contains(url)) album_covers_requests_sent_.remove(url);
     AlbumCoverFinishCheck();
     return;
   }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-  QList<QByteArray> format_list = QImageReader::imageFormatsForMimeType(mimetype.toUtf8());
-#else
-  QList<QByteArray> format_list = Utilities::ImageFormatsForMimeType(mimetype.toUtf8());
-#endif
-
   QByteArray data = reply->readAll();
-  if (format_list.isEmpty() || data.isEmpty()) {
+  if (data.isEmpty()) {
     Error(QString("Received empty image data for %1").arg(url.toString()));
     if (album_covers_requests_sent_.contains(url)) album_covers_requests_sent_.remove(url);
     AlbumCoverFinishCheck();
     return;
   }
-  QByteArray format = format_list.first();
-  QString fullfilename = filename + "." + format.toLower();
+
+  QList<QByteArray> format_list = Utilities::ImageFormatsForMimeType(mimetype.toUtf8());
+  char *format = nullptr;
+  if (!format_list.isEmpty()) {
+    format = format_list.first().data();
+  }
 
   QImage image;
   if (image.loadFromData(data, format)) {
-    if (image.save(fullfilename, format)) {
+    if (image.save(filename, format)) {
       while (album_covers_requests_sent_.contains(url)) {
         Song *song = album_covers_requests_sent_.take(url);
-        song->set_art_automatic(QUrl::fromLocalFile(fullfilename));
+        song->set_art_automatic(QUrl::fromLocalFile(filename));
       }
     }
     else {
-      Error(QString("Error saving image data to %1.").arg(fullfilename));
+      Error(QString("Error saving image data to %1.").arg(filename));
       if (album_covers_requests_sent_.contains(url)) album_covers_requests_sent_.remove(url);
     }
   }

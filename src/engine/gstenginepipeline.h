@@ -71,8 +71,9 @@ class GstEnginePipeline : public QObject {
   void set_stereo_balancer_enabled(const bool enabled);
   void set_equalizer_enabled(const bool enabled);
   void set_replaygain(const bool enabled, const int mode, const float preamp, const bool compression);
-  void set_buffer_duration_nanosec(qint64 duration_nanosec);
-  void set_buffer_min_fill(int percent);
+  void set_buffer_duration_nanosec(const qint64 duration_nanosec);
+  void set_buffer_low_watermark(const double value);
+  void set_buffer_high_watermark(const double value);
 
   // Creates the pipeline, returns false on error
   bool InitFromUrl(const QByteArray &stream_url, const QUrl original_url, const qint64 end_nanosec);
@@ -121,11 +122,11 @@ class GstEnginePipeline : public QObject {
   void SetVolumeModifier(qreal mod);
 
  signals:
-  void EndOfStreamReached(const int pipeline_id, const bool has_next_track);
-  void MetadataFound(const int pipeline_id, const Engine::SimpleMetaBundle &bundle);
+  void EndOfStreamReached(int pipeline_id, bool has_next_track);
+  void MetadataFound(int pipeline_id, const Engine::SimpleMetaBundle &bundle);
   // This indicates an error, delegated from GStreamer, in the pipeline.
   // The message, domain and error_code are related to GStreamer's GError.
-  void Error(const int pipeline_id, const QString &message, const int domain, const int error_code);
+  void Error(int pipeline_id, QString message, int domain, int error_code);
   void FaderFinished();
 
   void BufferingStarted();
@@ -211,7 +212,8 @@ class GstEnginePipeline : public QObject {
 
   // Buffering
   quint64 buffer_duration_nanosec_;
-  int buffer_min_fill_;
+  double buffer_low_watermark_;
+  double buffer_high_watermark_;
   bool buffering_;
 
   // These get called when there is a new audio buffer available

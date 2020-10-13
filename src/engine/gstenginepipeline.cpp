@@ -50,6 +50,7 @@
 #include "core/signalchecker.h"
 #include "core/timeconstants.h"
 #include "core/song.h"
+#include "settings/backendsettingspage.h"
 #include "enginebase.h"
 #include "gstengine.h"
 #include "gstenginepipeline.h"
@@ -80,8 +81,9 @@ GstEnginePipeline::GstEnginePipeline(GstEngine *engine)
       rg_mode_(0),
       rg_preamp_(0.0),
       rg_compression_(true),
-      buffer_duration_nanosec_(1 * kNsecPerSec),
-      buffer_min_fill_(33),
+      buffer_duration_nanosec_(BackendSettingsPage::kDefaultBufferDuration * kNsecPerMsec),
+      buffer_low_watermark_(BackendSettingsPage::kDefaultBufferLowWatermark),
+      buffer_high_watermark_(BackendSettingsPage::kDefaultBufferHighWatermark),
       buffering_(false),
       segment_start_(0),
       segment_start_received_(false),
@@ -203,8 +205,12 @@ void GstEnginePipeline::set_buffer_duration_nanosec(const qint64 buffer_duration
   buffer_duration_nanosec_ = buffer_duration_nanosec;
 }
 
-void GstEnginePipeline::set_buffer_min_fill(int percent) {
-  buffer_min_fill_ = percent;
+void GstEnginePipeline::set_buffer_low_watermark(const double value) {
+  buffer_low_watermark_ = value;
+}
+
+void GstEnginePipeline::set_buffer_high_watermark(const double value) {
+  buffer_high_watermark_ = value;
 }
 
 bool GstEnginePipeline::InitFromUrl(const QByteArray &stream_url, const QUrl original_url, const qint64 end_nanosec) {
@@ -382,10 +388,12 @@ bool GstEnginePipeline::InitAudioBin() {
 
   g_object_set(G_OBJECT(audioqueue_), "max-size-buffers", 0, nullptr);
   g_object_set(G_OBJECT(audioqueue_), "max-size-bytes", 0, nullptr);
-  g_object_set(G_OBJECT(audioqueue_), "max-size-time", buffer_duration_nanosec_, nullptr);
-  g_object_set(G_OBJECT(audioqueue_), "low-percent", buffer_min_fill_, nullptr);
   if (buffer_duration_nanosec_ > 0) {
+    qLog(Info) << "Setting buffer duration:" << buffer_duration_nanosec_ << "low watermark:" << buffer_low_watermark_ << "high watermark:" << buffer_high_watermark_;
     g_object_set(G_OBJECT(audioqueue_), "use-buffering", true, nullptr);
+    g_object_set(G_OBJECT(audioqueue_), "max-size-time", buffer_duration_nanosec_, nullptr);
+    g_object_set(G_OBJECT(audioqueue_), "low-watermark", buffer_low_watermark_, nullptr);
+    g_object_set(G_OBJECT(audioqueue_), "high-watermark", buffer_high_watermark_, nullptr);
   }
 
   // Link all elements
@@ -590,6 +598,10 @@ GstPadProbeReturn GstEnginePipeline::HandoffCallback(GstPad *pad, GstPadProbeInf
   GstBuffer *buf = gst_pad_probe_info_get_buffer(info);
   GstBuffer *buf16 = nullptr;
 
+  quint64 start_time = GST_BUFFER_TIMESTAMP(buf) - instance->segment_start_;
+  quint64 duration = GST_BUFFER_DURATION(buf);
+  qint64 end_time = start_time + duration;
+
   if (format.startsWith("S16LE")) {
     instance->unsupported_analyzer_ = false;
   }
@@ -679,28 +691,22 @@ GstPadProbeReturn GstEnginePipeline::HandoffCallback(GstPad *pad, GstPadProbeInf
   }
 
   // Calculate the end time of this buffer so we can stop playback if it's after the end time of this song.
-  if (instance->end_offset_nanosec_ > 0) {
-    quint64 start_time = GST_BUFFER_TIMESTAMP(buf) - instance->segment_start_;
-    quint64 duration = GST_BUFFER_DURATION(buf);
-    qint64 end_time = start_time + duration;
+  if (instance->end_offset_nanosec_ > 0 && end_time > instance->end_offset_nanosec_) {
+    if (instance->has_next_valid_url() && instance->next_stream_url_ == instance->stream_url_ && instance->next_beginning_offset_nanosec_ == instance->end_offset_nanosec_) {
+      // The "next" song is actually the next segment of this file - so cheat and keep on playing, but just tell the Engine we've moved on.
+      instance->end_offset_nanosec_ = instance->next_end_offset_nanosec_;
+      instance->next_stream_url_.clear();
+      instance->next_original_url_.clear();
+      instance->next_beginning_offset_nanosec_ = 0;
+      instance->next_end_offset_nanosec_ = 0;
 
-    if (end_time > instance->end_offset_nanosec_) {
-      if (instance->has_next_valid_url() && instance->next_stream_url_ == instance->stream_url_ && instance->next_beginning_offset_nanosec_ == instance->end_offset_nanosec_) {
-          // The "next" song is actually the next segment of this file - so cheat and keep on playing, but just tell the Engine we've moved on.
-          instance->end_offset_nanosec_ = instance->next_end_offset_nanosec_;
-          instance->next_stream_url_.clear();
-          instance->next_original_url_.clear();
-          instance->next_beginning_offset_nanosec_ = 0;
-          instance->next_end_offset_nanosec_ = 0;
-
-          // GstEngine will try to seek to the start of the new section, but we're already there so ignore it.
-          instance->ignore_next_seek_ = true;
-          emit instance->EndOfStreamReached(instance->id(), true);
-      }
-      else {
-        // There's no next song
-        emit instance->EndOfStreamReached(instance->id(), false);
-      }
+      // GstEngine will try to seek to the start of the new section, but we're already there so ignore it.
+      instance->ignore_next_seek_ = true;
+      emit instance->EndOfStreamReached(instance->id(), true);
+    }
+    else {
+      // There's no next song
+      emit instance->EndOfStreamReached(instance->id(), false);
     }
   }
 
@@ -748,7 +754,7 @@ gboolean GstEnginePipeline::BusCallback(GstBus*, GstMessage *msg, gpointer self)
 
 }
 
-GstBusSyncReply GstEnginePipeline::BusCallbackSync(GstBus *, GstMessage *msg, gpointer self) {
+GstBusSyncReply GstEnginePipeline::BusCallbackSync(GstBus*, GstMessage *msg, gpointer self) {
 
   GstEnginePipeline *instance = reinterpret_cast<GstEnginePipeline*>(self);
 
@@ -862,22 +868,25 @@ void GstEnginePipeline::ErrorMessageReceived(GstMessage *msg) {
   gchar *debugs = nullptr;
 
   gst_message_parse_error(msg, &error, &debugs);
+  GQuark domain = error->domain;
+  int code = error->code;
   QString message = QString::fromLocal8Bit(error->message);
   QString debugstr = QString::fromLocal8Bit(debugs);
-  int domain = error->domain;
-  int code = error->code;
   g_error_free(error);
   g_free(debugs);
 
-  if (state() == GST_STATE_PLAYING && pipeline_is_initialised_ && next_uri_set_ && (domain == static_cast<int>(GST_RESOURCE_ERROR) || domain == static_cast<int>(GST_STREAM_ERROR))) {
+  if (state() == GST_STATE_PLAYING && pipeline_is_initialised_ && next_uri_set_ && (domain == GST_RESOURCE_ERROR || domain == GST_STREAM_ERROR)) {
     // A track is still playing and the next uri is not playable. We ignore the error here so it can play until the end.
     // But there is no message send to the bus when the current track finishes, we have to add an EOS ourself.
-    qLog(Debug) << "Ignoring error when loading next track";
+    qLog(Info) << "Ignoring error when loading next track";
     GstPad *sinkpad = gst_element_get_static_pad(audiobin_, "sink");
     gst_pad_send_event(sinkpad, gst_event_new_eos());
     gst_object_unref(sinkpad);
     return;
   }
+
+  qLog(Error) << __FUNCTION__ << "ID:" << id() << "Domain:" << domain << "Code:" << code << "Error:" << message;
+  qLog(Error) << __FUNCTION__ << "ID:" << id() << "Domain:" << domain << "Code:" << code << "Debug:" << debugstr;
 
   if (!redirect_url_.isEmpty() && debugstr.contains("A redirect message was posted on the bus and should have been handled by the application.")) {
     // mmssrc posts a message on the bus *and* makes an error message when it wants to do a redirect.
@@ -885,9 +894,14 @@ void GstEnginePipeline::ErrorMessageReceived(GstMessage *msg) {
     return;
   }
 
-  qLog(Error) << __FUNCTION__ << id() << debugstr;
+#ifdef Q_OS_WIN
+  // Ignore non-error received for directsoundsink: "IDirectSoundBuffer_GetStatus The operation completed successfully"
+  if (code == GST_RESOURCE_ERROR_OPEN_WRITE && message.contains("IDirectSoundBuffer_GetStatus The operation completed successfully.")) {
+    return;
+  }
+#endif
 
-  emit Error(id(), message, domain, code);
+  emit Error(id(), message, static_cast<int>(domain), code);
 
 }
 

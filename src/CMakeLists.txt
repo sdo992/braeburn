@@ -185,6 +185,7 @@ set(SOURCES
   dialogs/userpassdialog.cpp
   dialogs/deleteconfirmationdialog.cpp
   dialogs/lastfmimportdialog.cpp
+  dialogs/snapdialog.cpp
 
   widgets/autoexpandingtreeview.cpp
   widgets/busyindicator.cpp
@@ -412,6 +413,7 @@ set(HEADERS
   dialogs/userpassdialog.h
   dialogs/deleteconfirmationdialog.h
   dialogs/lastfmimportdialog.h
+  dialogs/snapdialog.h
 
   widgets/autoexpandingtreeview.h
   widgets/busyindicator.h
@@ -537,6 +539,7 @@ set(UI
   dialogs/addstreamdialog.ui
   dialogs/userpassdialog.ui
   dialogs/lastfmimportdialog.ui
+  dialogs/snapdialog.ui
 
   widgets/trackslider.ui
   widgets/fileview.ui
@@ -911,9 +914,9 @@ optional_source(WIN32
   SOURCES
     engine/directsounddevicefinder.cpp
     engine/mmdevicefinder.cpp
-    core/windows7thumbbar.cpp
-  HEADERS
-    core/windows7thumbbar.h
+    #core/windows7thumbbar.cpp
+  #HEADERS
+    #core/windows7thumbbar.h
 )
 
 optional_source(HAVE_SUBSONIC

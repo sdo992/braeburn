@@ -2,6 +2,7 @@
  * Strawberry Music Player
  * This file was part of Clementine.
  * Copyright 2010, David Sansome <me@davidsansome.com>
+ * Copyright 2020, Jonas Kvinge <jonas@jkvinge.net>
  *
  * Strawberry is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +22,15 @@
 #ifndef WINDOWS7THUMBBAR_H
 #define WINDOWS7THUMBBAR_H
 
-#include "config.h"
-
 #include <windows.h>
 #include <shobjidl.h>
 
 #include <QObject>
 #include <QWidget>
 #include <QList>
-#include <QString>
-#include <QAction>
+
+class QTimer;
+class QAction;
 
 class Windows7ThumbBar : public QObject {
   Q_OBJECT
@@ -48,16 +48,20 @@ class Windows7ThumbBar : public QObject {
   // Call this from the parent's winEvent() function.
   void HandleWinEvent(MSG *msg);
 
+ private:
+  ITaskbarList3 *CreateTaskbarList();
+  void SetupButton(const QAction *action, THUMBBUTTON *button);
+
  private slots:
+  void ActionChangedTriggered();
   void ActionChanged();
 
  private:
   QWidget *widget_;
+  QTimer *timer_;
   QList<QAction*> actions_;
 
   unsigned int button_created_message_id_;
-
-  ITaskbarList3 *taskbar_list_;
 };
 
 #endif  // WINDOWS7THUMBBAR_H

@@ -762,29 +762,6 @@ bool IsLaptop() {
 
 }
 
-bool UrlOnSameDriveAsStrawberry(const QUrl &url) {
-
-  if (!url.isValid() || !url.isLocalFile() || url.toLocalFile().isEmpty()) return false;
-
-#ifdef Q_OS_WIN
-  QUrl appUrl = QUrl::fromLocalFile(QCoreApplication::applicationDirPath());
-  if (url.toLocalFile().left(1) == appUrl.toLocalFile().left(1))
-    return true;
-  else
-    return false;
-#else
-  // Non windows systems have always a / in the path
-  return true;
-#endif
-
-}
-
-QUrl GetRelativePathToStrawberryBin(const QUrl &url) {
-  if (!url.isValid()) return QUrl();
-  QDir appPath(QCoreApplication::applicationDirPath());
-  return QUrl::fromLocalFile(appPath.relativeFilePath(url.toLocalFile()));
-}
-
 QString PathWithoutFilenameExtension(const QString &filename) {
   if (filename.section('/', -1, -1).contains('.')) return filename.section('.', 0, -2);
   return filename;

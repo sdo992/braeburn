@@ -108,12 +108,6 @@ const char *EnumToString(const QMetaObject &meta, const char *name, int value);
 QStringList Prepend(const QString &text, const QStringList &list);
 QStringList Updateify(const QStringList &list);
 
-// Check if two urls are on the same drive (mainly for windows)
-bool UrlOnSameDriveAsStrawberry(const QUrl &url);
-
-// Get relative path to Strawberry binary
-QUrl GetRelativePathToStrawberryBin(const QUrl &url);
-
 // Get the path without the filename extension
 QString PathWithoutFilenameExtension(const QString &filename);
 QString FiddleFileExtension(const QString &filename, const QString &new_extension);

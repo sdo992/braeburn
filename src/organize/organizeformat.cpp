@@ -108,14 +108,22 @@ bool OrganizeFormat::IsValid() const {
 
 }
 
-QString OrganizeFormat::GetFilenameForSong(const Song &song) const {
+QString OrganizeFormat::GetFilenameForSong(const Song &song, QString extension) const {
 
   QString filename = ParseBlock(format_, song);
 
   if (QFileInfo(filename).completeBaseName().isEmpty()) {
     // Avoid having empty filenames, or filenames with extension only: in this case, keep the original filename.
     // We remove the extension from "filename" if it exists, as song.basefilename() also contains the extension.
-    filename = Utilities::PathWithoutFilenameExtension(filename) + song.basefilename();
+    QString path = QFileInfo(filename).path();
+    filename.clear();
+    if (!path.isEmpty()) {
+      filename.append(path);
+      if (path.right(1) != '/' && path.right(1) != '\\') {
+        filename.append('/');
+      }
+    }
+    filename.append(song.basefilename());
   }
 
   if (remove_problematic_) filename = filename.remove(kProblematicCharacters);
@@ -144,7 +152,7 @@ QString OrganizeFormat::GetFilenameForSong(const Song &song) const {
   filename = filename.simplified();
 
   QFileInfo info(filename);
-  QString extension = info.suffix();
+  if (extension.isEmpty()) extension = info.suffix();
   QString filepath;
   if (!info.path().isEmpty() && info.path() != ".") {
     filepath.append(info.path());

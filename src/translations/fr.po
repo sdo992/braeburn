@@ -37,13 +37,14 @@
 # David Geiger <geiger.david68210@gmail.com>, 2020. #zanata
 # Jonas Kvinge <jonas@jkvinge.net>, 2020. #zanata
 # Papoteur <yves.brungard_mageia@gadz.org>, 2020. #zanata
+# Sébastien Morin <sebsweb@gmail.com>, 2020. #zanata
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "MIME-Version: 1.0\n"
-"PO-Revision-Date: 2020-10-12 01:09-0400\n"
-"Last-Translator: David Geiger <geiger.david68210@gmail.com>\n"
+"PO-Revision-Date: 2020-10-19 02:36-0400\n"
+"Last-Translator: Sébastien Morin <sebsweb@gmail.com>\n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Language-Team: French\n"
@@ -772,7 +773,7 @@ msgid "Albu&m cover"
 msgstr "&Pochette de l'album"
 
 #: collection/savedgroupingmanager.cpp:88 playlist/playlist.cpp:1264
-#: organize/organizedialog.cpp:99 ../build/src/ui_groupbydialog.h:186
+#: organize/organizedialog.cpp:102 ../build/src/ui_groupbydialog.h:186
 #: ../build/src/ui_groupbydialog.h:208 ../build/src/ui_groupbydialog.h:230
 #: ../build/src/ui_albumcoversearcher.h:110
 #: ../build/src/ui_albumcoversearcher.h:112
@@ -792,7 +793,7 @@ msgid "Album - Disc"
 msgstr "Album - CD"
 
 #: collection/savedgroupingmanager.cpp:82 playlist/playlist.cpp:1271
-#: organize/organizedialog.cpp:102 ../build/src/ui_groupbydialog.h:185
+#: organize/organizedialog.cpp:105 ../build/src/ui_groupbydialog.h:185
 #: ../build/src/ui_groupbydialog.h:207 ../build/src/ui_groupbydialog.h:229
 #: ../build/src/ui_edittagdialog.h:709
 msgid "Album artist"
@@ -879,7 +880,7 @@ msgid "An error occurred loading the iTunes database"
 msgstr ""
 "Une erreur est survenue lors du chargement de la base de données iTunes"
 
-#: playlist/playlist.cpp:412 dialogs/edittagdialog.cpp:953
+#: playlist/playlist.cpp:412 dialogs/edittagdialog.cpp:956
 #, qt-format
 msgid "An error occurred writing metadata to '%1'"
 msgstr ""
@@ -929,13 +930,13 @@ msgstr "Êtes-vous sûr(e) de vouloir continuer ?"
 msgid "Are you sure you want to delete the \"%1\" preset?"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer la valeur prédéfinie « %1 » ?"
 
-#: dialogs/edittagdialog.cpp:869
+#: dialogs/edittagdialog.cpp:872
 msgid "Are you sure you want to reset this song's statistics?"
 msgstr ""
 "Êtes vous sûr(e) de vouloir réinitialiser les statistiques de ce morceau ?"
 
 #: collection/savedgroupingmanager.cpp:85 playlist/playlist.cpp:1263
-#: organize/organizedialog.cpp:100 ../build/src/ui_groupbydialog.h:184
+#: organize/organizedialog.cpp:103 ../build/src/ui_groupbydialog.h:184
 #: ../build/src/ui_groupbydialog.h:206 ../build/src/ui_groupbydialog.h:228
 #: ../build/src/ui_albumcoversearcher.h:106
 #: ../build/src/ui_albumcoversearcher.h:108 ../build/src/ui_edittagdialog.h:713
@@ -943,7 +944,7 @@ msgstr ""
 msgid "Artist"
 msgstr "Artiste"
 
-#: organize/organizedialog.cpp:101
+#: organize/organizedialog.cpp:104
 msgid "Artist's initial"
 msgstr "Initiale de l'artiste"
 
@@ -1080,7 +1081,7 @@ msgid "Best"
 msgstr "Meilleur"
 
 #: context/contextview.cpp:216 collection/savedgroupingmanager.cpp:136
-#: playlist/playlist.cpp:1281 organize/organizedialog.cpp:115
+#: playlist/playlist.cpp:1281 organize/organizedialog.cpp:118
 #: ../build/src/ui_groupbydialog.h:201 ../build/src/ui_groupbydialog.h:223
 #: ../build/src/ui_groupbydialog.h:245 ../build/src/ui_edittagdialog.h:695
 msgid "Bit depth"
@@ -1101,7 +1102,7 @@ msgstr "Débit"
 msgid "Bitrate"
 msgstr "Débit"
 
-#: organize/organizedialog.cpp:113
+#: organize/organizedialog.cpp:116
 msgctxt "Refers to bitrate in file organize dialog."
 msgid "Bitrate"
 msgstr "Débit"
@@ -1146,7 +1147,7 @@ msgstr "Tampon"
 msgid "Buffer duration"
 msgstr "Durée du tampon"
 
-#: engine/gstengine.cpp:630
+#: engine/gstengine.cpp:681
 msgid "Buffering"
 msgstr "Mise en mémoire tampon"
 
@@ -1166,7 +1167,7 @@ msgstr "CDDA"
 msgid "Cancel"
 msgstr "Annulé"
 
-#: tidal/tidalstreamurlrequest.cpp:107 qobuz/qobuzstreamurlrequest.cpp:103
+#: tidal/tidalstreamurlrequest.cpp:108 qobuz/qobuzstreamurlrequest.cpp:103
 msgid "Cancelled."
 msgstr "Annulé."
 
@@ -1322,7 +1323,7 @@ msgstr ""
 "3"
 
 #: playlist/playlist.cpp:1291 smartplaylists/smartplaylistsearchterm.cpp:374
-#: organize/organizedialog.cpp:111 ../build/src/ui_edittagdialog.h:711
+#: organize/organizedialog.cpp:114 ../build/src/ui_edittagdialog.h:711
 msgid "Comment"
 msgstr "Commentaire"
 
@@ -1339,7 +1340,7 @@ msgid "Complete tags automatically..."
 msgstr "Compléter les tags automatiquement..."
 
 #: collection/savedgroupingmanager.cpp:118 playlist/playlist.cpp:1272
-#: organize/organizedialog.cpp:103 ../build/src/ui_groupbydialog.h:196
+#: organize/organizedialog.cpp:106 ../build/src/ui_groupbydialog.h:196
 #: ../build/src/ui_groupbydialog.h:218 ../build/src/ui_groupbydialog.h:240
 #: ../build/src/ui_edittagdialog.h:710
 msgid "Composer"
@@ -1737,7 +1738,7 @@ msgid "Disabled"
 msgstr "Désactivé"
 
 #: collection/savedgroupingmanager.cpp:106 playlist/playlist.cpp:1266
-#: organize/organizedialog.cpp:107 ../build/src/ui_groupbydialog.h:188
+#: organize/organizedialog.cpp:110 ../build/src/ui_groupbydialog.h:188
 #: ../build/src/ui_groupbydialog.h:210 ../build/src/ui_groupbydialog.h:232
 #: ../build/src/ui_edittagdialog.h:708
 msgid "Disc"
@@ -1774,7 +1775,7 @@ msgstr "Ne pas écraser"
 
 #: ../build/src/ui_snapdialog.h:120
 msgid "Do not show this message again."
-msgstr ""
+msgstr "Ne plus afficher ce message."
 
 #: osd/osdbase.cpp:322 ../build/src/ui_playlistsequence.h:110
 msgid "Don't repeat"
@@ -2157,7 +2158,7 @@ msgstr "Erreur lors de la récupération de la pochette"
 msgid "File %1 is not recognized as a valid audio file."
 msgstr "Le fichier %1 n'est pas un fichier audio valide."
 
-#: organize/organizedialog.cpp:116
+#: organize/organizedialog.cpp:119
 msgid "File extension"
 msgstr "Extension de fichier"
 
@@ -2254,11 +2255,13 @@ msgstr "Taille de police"
 #: dialogs/snapdialog.cpp:56
 #, qt-format
 msgid "For Ubuntu there is an official PPA repository available at %1."
-msgstr ""
+msgstr "Pour Ubuntu, il existe un dépôt PPA officiel disponible sur %1."
 
 #: dialogs/snapdialog.cpp:64
 msgid "For a better experience please consider the other options above."
 msgstr ""
+"Pour améliorer l'expérience de l'utilisateur, veuillez envisager l'une des "
+"options ci-dessus."
 
 #: ../build/src/ui_transcoderoptionsmp3.h:203
 msgid "Force mono encoding"
@@ -2343,7 +2346,7 @@ msgid "Genius Authentication"
 msgstr "Authentification Genius"
 
 #: collection/savedgroupingmanager.cpp:115 playlist/playlist.cpp:1270
-#: organize/organizedialog.cpp:110 ../build/src/ui_groupbydialog.h:190
+#: organize/organizedialog.cpp:113 ../build/src/ui_groupbydialog.h:190
 #: ../build/src/ui_groupbydialog.h:212 ../build/src/ui_groupbydialog.h:234
 #: ../build/src/ui_edittagdialog.h:704
 msgid "Genre"
@@ -2442,7 +2445,7 @@ msgid "Group by Genre/Artist/Album"
 msgstr "Grouper par Genre/Artiste/Album"
 
 #: collection/savedgroupingmanager.cpp:124 playlist/playlist.cpp:1274
-#: organize/organizedialog.cpp:105 ../build/src/ui_groupbydialog.h:198
+#: organize/organizedialog.cpp:108 ../build/src/ui_groupbydialog.h:198
 #: ../build/src/ui_groupbydialog.h:220 ../build/src/ui_groupbydialog.h:242
 #: ../build/src/ui_edittagdialog.h:706
 msgid "Grouping"
@@ -2632,6 +2635,8 @@ msgstr ""
 #: dialogs/snapdialog.cpp:44
 msgid "It is detected that Strawberry is running as a Snap"
 msgstr ""
+"Nous avons détecté que Strawberry est en cours d'exécution en tant que "
+"programme Snap."
 
 #: ../build/src/ui_behavioursettingspage.h:302
 msgid "Jump to previous song right away"
@@ -2697,7 +2702,7 @@ msgid "Left"
 msgstr "Gauche"
 
 #: context/contextview.cpp:214 playlist/playlist.cpp:1267
-#: organize/organizedialog.cpp:112 ../build/src/ui_edittagdialog.h:689
+#: organize/organizedialog.cpp:115 ../build/src/ui_edittagdialog.h:689
 msgid "Length"
 msgstr "Durée"
 
@@ -2915,7 +2920,7 @@ msgstr "Le nom d'utilisateur ou le mot de passe de Subsonic est manquant."
 
 #: tidal/tidalservice.cpp:737 tidal/tidalservice.cpp:796
 #: tidal/tidalservice.cpp:853 tidal/tidalservice.cpp:918
-#: tidal/tidalservice.cpp:978 tidal/tidalstreamurlrequest.cpp:89
+#: tidal/tidalservice.cpp:978 tidal/tidalstreamurlrequest.cpp:90
 msgid "Missing Tidal API token, username or password."
 msgstr ""
 "Le jeton de l'API Tidal, le nom d'utilisateur ou le mot de passe est "
@@ -3160,7 +3165,7 @@ msgstr ""
 
 #: tidal/tidalservice.cpp:732 tidal/tidalservice.cpp:791
 #: tidal/tidalservice.cpp:848 tidal/tidalservice.cpp:913
-#: tidal/tidalservice.cpp:974 tidal/tidalstreamurlrequest.cpp:85
+#: tidal/tidalservice.cpp:974 tidal/tidalstreamurlrequest.cpp:86
 msgid "Not authenticated with Tidal."
 msgstr "Aucune authentification sur Tidal."
 
@@ -3206,6 +3211,9 @@ msgid ""
 "Official releases are available for Debian and Ubuntu which also work on "
 "most of their derivatives. See %1 for more information."
 msgstr ""
+"Des paquetages officiels sont disponibles pour Debian et Ubuntu, et "
+"fonctionnent aussi sur la plupart de leurs dérivés. Voir %1 pour plus "
+"d'informations."
 
 #: osd/osdbase.cpp:245
 msgid "On"
@@ -3286,7 +3294,7 @@ msgid "Original tags"
 msgstr "Tags originaux"
 
 #: collection/savedgroupingmanager.cpp:112 playlist/playlist.cpp:1269
-#: organize/organizedialog.cpp:109 ../build/src/ui_groupbydialog.h:194
+#: organize/organizedialog.cpp:112 ../build/src/ui_groupbydialog.h:194
 #: ../build/src/ui_groupbydialog.h:216 ../build/src/ui_groupbydialog.h:238
 msgid "Original year"
 msgstr "Année d'origine"
@@ -3359,7 +3367,7 @@ msgid "Paused"
 msgstr "En pause"
 
 #: collection/savedgroupingmanager.cpp:121 playlist/playlist.cpp:1273
-#: organize/organizedialog.cpp:104 ../build/src/ui_groupbydialog.h:197
+#: organize/organizedialog.cpp:107 ../build/src/ui_groupbydialog.h:197
 #: ../build/src/ui_groupbydialog.h:219 ../build/src/ui_groupbydialog.h:241
 #: ../build/src/ui_edittagdialog.h:715
 msgid "Performer"
@@ -3838,7 +3846,7 @@ msgstr "Réanalyse des morceaux..."
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: dialogs/edittagdialog.cpp:869 ../build/src/ui_edittagdialog.h:688
+#: dialogs/edittagdialog.cpp:872 ../build/src/ui_edittagdialog.h:688
 msgid "Reset play counts"
 msgstr "Réinitialiser le compteur de lecture"
 
@@ -3945,7 +3953,7 @@ msgid "Safely remove the device after copying"
 msgstr "Enlever le périphérique en toute sécurité à la fin de la copie"
 
 #: collection/savedgroupingmanager.cpp:133 playlist/playlist.cpp:1280
-#: organize/organizedialog.cpp:114 ../build/src/ui_groupbydialog.h:200
+#: organize/organizedialog.cpp:117 ../build/src/ui_groupbydialog.h:200
 #: ../build/src/ui_groupbydialog.h:222 ../build/src/ui_groupbydialog.h:244
 #: ../build/src/ui_edittagdialog.h:694
 msgid "Sample rate"
@@ -4005,7 +4013,7 @@ msgstr "Gestionnaire des regroupements enregistrés"
 msgid "Saving album covers"
 msgstr "Sauvegarde des pochettes d'album"
 
-#: dialogs/edittagdialog.cpp:784 dialogs/trackselectiondialog.cpp:291
+#: dialogs/edittagdialog.cpp:787 dialogs/trackselectiondialog.cpp:291
 msgid "Saving tracks"
 msgstr "Sauvegarde des pistes"
 
@@ -4537,11 +4545,11 @@ msgstr ""
 
 #: dialogs/snapdialog.cpp:40
 msgid "Strawberry is running as a Snap"
-msgstr ""
+msgstr "Strawberry est en cours d'exécution en tant que programme Snap"
 
 #: ../build/src/ui_snapdialog.h:117
 msgid "Strawberry is running as a snap"
-msgstr ""
+msgstr "Strawberry est en cours d'exécution en tant que programme Snap"
 
 #: dialogs/snapdialog.cpp:48
 msgid ""
@@ -4549,6 +4557,10 @@ msgid ""
 "the root filesystem (/) will not work. There also might be other "
 "restrictions such as accessing certain devices or network shares."
 msgstr ""
+"Strawberry est plus lent, et comporte des restrictions, lorsqu'il est "
+"exécuté en tant que programme Snap. Il sera impossible d'accéder à la "
+"partition root (/). D'autres restrictions peuvent survenir, comme "
+"l'incapacité à accéder à certains périphériques ou à des partages réseaux."
 
 #: ../build/src/ui_trackselectiondialog.h:205
 msgid "Strawberry was unable to find results for this file"
@@ -4828,7 +4840,7 @@ msgstr ""
 msgid "Time step"
 msgstr "Pas temporel"
 
-#: playlist/playlist.cpp:1262 organize/organizedialog.cpp:98
+#: playlist/playlist.cpp:1262 organize/organizedialog.cpp:101
 #: ../build/src/ui_contextsettingspage.h:414
 #: ../build/src/ui_edittagdialog.h:705
 #: ../build/src/ui_trackselectiondialog.h:210
@@ -4875,7 +4887,7 @@ msgstr "Nombre total d'octets transférés"
 msgid "Total network requests made"
 msgstr "Nombre total de requêtes réseau effectuées"
 
-#: playlist/playlist.cpp:1265 organize/organizedialog.cpp:106
+#: playlist/playlist.cpp:1265 organize/organizedialog.cpp:109
 #: ../build/src/ui_edittagdialog.h:712
 #: ../build/src/ui_trackselectiondialog.h:212
 msgid "Track"
@@ -5200,7 +5212,7 @@ msgid "Write metadata when saving playlists"
 msgstr "Écrire des métadonnées lors de la sauvegarde des listes de lecture"
 
 #: collection/savedgroupingmanager.cpp:109 playlist/playlist.cpp:1268
-#: organize/organizedialog.cpp:108 ../build/src/ui_groupbydialog.h:191
+#: organize/organizedialog.cpp:111 ../build/src/ui_groupbydialog.h:191
 #: ../build/src/ui_groupbydialog.h:213 ../build/src/ui_groupbydialog.h:235
 #: ../build/src/ui_edittagdialog.h:714
 #: ../build/src/ui_trackselectiondialog.h:211
@@ -5451,7 +5463,7 @@ msgstr "pas en dernier"
 
 #: smartplaylists/smartplaylistsearchterm.cpp:243
 msgid "not on"
-msgstr ""
+msgstr "non allumé"
 
 #: smartplaylists/smartplaylistsearchterm.cpp:414
 msgid "oldest first"
@@ -5459,7 +5471,7 @@ msgstr "le plus ancien en premier"
 
 #: smartplaylists/smartplaylistsearchterm.cpp:241
 msgid "on"
-msgstr ""
+msgstr "allumé"
 
 #: core/commandlineoptions.cpp:162
 msgid "options"

@@ -253,10 +253,11 @@ set(SOURCES
   organize/organizedialog.cpp
   organize/organizeerrordialog.cpp
 
-  artistbio/wikipediaartistbio.cpp
   artistbio/artistbioview.cpp
   artistbio/artistbiofetcher.cpp
   artistbio/artistbioprovider.cpp
+  artistbio/lastfmartistbio.cpp
+  artistbio/wikipediaartistbio.cpp
 
 )
 
@@ -480,8 +481,9 @@ set(HEADERS
 
   artistbio/artistbiofetcher.h
   artistbio/artistbioprovider.h
-  artistbio/wikipediaartistbio.h
   artistbio/artistbioview.h
+  artistbio/lastfmartistbio.h
+  artistbio/wikipediaartistbio.h
 
 )
 

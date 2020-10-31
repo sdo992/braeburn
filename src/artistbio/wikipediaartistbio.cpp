@@ -40,7 +40,7 @@
 const char *WikipediaArtistBio::kApiUrl = "https://en.wikipedia.org/w/api.php";
 const int WikipediaArtistBio::kMinimumImageSize = 400;
 
-WikipediaArtistBio::WikipediaArtistBio() : network_(new NetworkAccessManager(this)) {}
+WikipediaArtistBio::WikipediaArtistBio() : ArtistBioProvider(), network_(new NetworkAccessManager(this)) {}
 
 WikipediaArtistBio::~WikipediaArtistBio() {
 
@@ -149,7 +149,7 @@ void WikipediaArtistBio::Start(const int id, const Song &metadata) {
   });
 
   GetImageTitles(id, metadata.artist(), latch);
-  GetArticle(id, metadata.artist(), latch);
+  //GetArticle(id, metadata.artist(), latch);
 
 }
 

@@ -32,6 +32,7 @@
 #include "widgets/prettyimageview.h"
 #include "widgets/widgetfadehelper.h"
 #include "artistbiofetcher.h"
+#include "lastfmartistbio.h"
 #include "wikipediaartistbio.h"
 
 #include "artistbioview.h"
@@ -75,6 +76,7 @@ ArtistBioView::ArtistBioView(QWidget *parent)
     stylesheet.close();
   }
 
+  fetcher_->AddProvider(new LastFMArtistBio);
   fetcher_->AddProvider(new WikipediaArtistBio);
 
   connect(fetcher_, SIGNAL(ResultReady(int, ArtistBioFetcher::Result)), SLOT(ResultReady(int, ArtistBioFetcher::Result)));

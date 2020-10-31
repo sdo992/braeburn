@@ -583,8 +583,8 @@ if(HAVE_GLOBALSHORTCUTS)
     SOURCES globalshortcuts/globalshortcut-x11.cpp
   )
   optional_source(HAVE_DBUS
-    SOURCES globalshortcuts/globalshortcutbackend-gsd.cpp
-    HEADERS globalshortcuts/globalshortcutbackend-gsd.h
+    SOURCES globalshortcuts/globalshortcutbackend-gsd.cpp globalshortcuts/globalshortcutbackend-kde.cpp
+    HEADERS globalshortcuts/globalshortcutbackend-gsd.h globalshortcuts/globalshortcutbackend-kde.h
   )
   optional_source(WIN32
     SOURCES globalshortcuts/globalshortcut-win.cpp
@@ -658,6 +658,14 @@ if(UNIX AND HAVE_DBUS)
         dbus/org.gnome.SettingsDaemon.MediaKeys.xml
         dbus/gnomesettingsdaemon)
 
+    # org.kde.KGlobalAccel interface
+    qt6_add_dbus_interface(SOURCES
+        dbus/org.kde.KGlobalAccel.xml
+        dbus/kglobalaccel)
+    qt6_add_dbus_interface(SOURCES
+        dbus/org.kde.KGlobalAccel.Component.xml
+        dbus/kglobalaccelcomponent)
+
   else()
 
     # MPRIS 2.0 DBUS interfaces
@@ -685,6 +693,14 @@ if(UNIX AND HAVE_DBUS)
     qt5_add_dbus_interface(SOURCES
         dbus/org.gnome.SettingsDaemon.MediaKeys.xml
         dbus/gnomesettingsdaemon)
+
+    # org.kde.KGlobalAccel interface
+    qt5_add_dbus_interface(SOURCES
+        dbus/org.kde.KGlobalAccel.xml
+        dbus/kglobalaccel)
+    qt5_add_dbus_interface(SOURCES
+        dbus/org.kde.KGlobalAccel.Component.xml
+        dbus/kglobalaccelcomponent)
 
   endif()
 
@@ -1057,7 +1073,6 @@ link_directories(
   ${GNUTLS_LIBRARY_DIRS}
   ${SQLITE_LIBRARY_DIRS}
   ${TAGLIB_LIBRARY_DIRS}
-  ${QT_LIBRARY_DIRS}
   ${SINGLEAPPLICATION_LIBRARY_DIRS}
   ${SINGLECOREAPPLICATION_LIBRARY_DIRS}
   ${QTSPARKLE_LIBRARY_DIRS}
@@ -1132,7 +1147,6 @@ target_include_directories(strawberry_lib SYSTEM PUBLIC
   ${GOBJECT_INCLUDE_DIRS}
   ${GNUTLS_INCLUDE_DIRS}
   ${SQLITE_INCLUDE_DIRS}
-  ${QT_INCLUDE_DIRS}
 )
 
 target_include_directories(strawberry_lib PUBLIC

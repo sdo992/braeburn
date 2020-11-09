@@ -29,6 +29,7 @@
 #include <iterator>
 #include <type_traits>
 #include <unordered_map>
+#include <random>
 
 #include <QtGlobal>
 #include <QObject>
@@ -49,12 +50,10 @@
 #include <QUrl>
 #include <QFont>
 #include <QBrush>
-#include <QLinkedList>
 #include <QUndoStack>
 #include <QUndoCommand>
 #include <QAbstractListModel>
 #include <QMutableListIterator>
-#include <QMutableLinkedListIterator>
 #include <QFlags>
 #include <QSettings>
 #include <QtDebug>
@@ -404,9 +403,10 @@ void Playlist::SongSaveComplete(TagReaderReply *reply, const QPersistentModelInd
   if (reply->is_successful() && idx.isValid()) {
     if (reply->message().save_file_response().success()) {
       PlaylistItemPtr item = item_at(idx.row());
-      if (!item) return;
-      QFuture<void> future = item->BackgroundReload();
-      NewClosure(future, this, SLOT(ItemReloadComplete(QPersistentModelIndex)), idx);
+      if (item) {
+        QFuture<void> future = item->BackgroundReload();
+        NewClosure(future, this, SLOT(ItemReloadComplete(QPersistentModelIndex)), idx);
+      }
     }
     else {
       emit Error(tr("An error occurred writing metadata to '%1'").arg(QString::fromStdString(reply->request_message().save_file_request().filename())));
@@ -1821,6 +1821,9 @@ void Playlist::ReshuffleIndices() {
   if (current_virtual_index_ != -1)
     std::advance(begin, current_virtual_index_ + 1);
 
+  std::random_device rd;
+  std::mt19937 g(rd());
+
   switch (playlist_sequence_->shuffle_mode()) {
     case PlaylistSequence::Shuffle_Off:
       // Handled above.
@@ -1828,7 +1831,7 @@ void Playlist::ReshuffleIndices() {
 
     case PlaylistSequence::Shuffle_All:
     case PlaylistSequence::Shuffle_InsideAlbum:
-      std::random_shuffle(begin, end);
+      std::shuffle(begin, end, g);
       break;
 
     case PlaylistSequence::Shuffle_Albums: {
@@ -1845,7 +1848,7 @@ void Playlist::ReshuffleIndices() {
 
       // Shuffle them
       QStringList shuffled_album_keys = album_key_set.values();
-      std::random_shuffle(shuffled_album_keys.begin(), shuffled_album_keys.end());
+      std::shuffle(shuffled_album_keys.begin(), shuffled_album_keys.end(), g);
 
       // If the user is currently playing a song, force its album to be first
       // Or if the song was not playing but it was selected, force its album to be first.

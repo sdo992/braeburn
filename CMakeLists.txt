@@ -29,12 +29,12 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "OpenBSD")
   set(OPENBSD ON)
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND COMPILE_OPTIONS
   $<$<COMPILE_LANGUAGE:C>:--std=c99>
-  $<$<COMPILE_LANGUAGE:CXX>:--std=c++11>
+  $<$<COMPILE_LANGUAGE:CXX>:--std=c++17>
   -U__STRICT_ANSI__
   -Wall
   -Wextra
@@ -170,9 +170,6 @@ endif()
 if(WIN32)
   list(APPEND QT_COMPONENTS WinExtras)
 endif()
-if(QT_MAJOR_VERSION EQUAL 6)
-  list(APPEND QT_COMPONENTS Core5Compat)
-endif()
 
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS ${QT_COMPONENTS})
 
@@ -182,10 +179,6 @@ set(QtWidgets_LIBRARIES Qt${QT_MAJOR_VERSION}::Widgets)
 set(QtNetwork_LIBRARIES Qt${QT_MAJOR_VERSION}::Network)
 set(QtSql_LIBRARIES Qt${QT_MAJOR_VERSION}::Sql)
 set(QT_LIBRARIES Qt${QT_MAJOR_VERSION}::Core Qt${QT_MAJOR_VERSION}::Concurrent Qt${QT_MAJOR_VERSION}::Widgets Qt${QT_MAJOR_VERSION}::Network Qt${QT_MAJOR_VERSION}::Sql)
-if(QT_MAJOR_VERSION EQUAL 6)
-  set(QtCore5Compat_LIBRARIES Qt${QT_MAJOR_VERSION}::Core5Compat)
-  list(APPEND QT_LIBRARIES Qt${QT_MAJOR_VERSION}::Core5Compat)
-endif()
 if(Qt${QT_MAJOR_VERSION}DBus_FOUND)
   set(QtDBus_LIBRARIES Qt${QT_MAJOR_VERSION}::DBus)
   list(APPEND QT_LIBRARIES Qt${QT_MAJOR_VERSION}::DBus)
@@ -382,7 +375,7 @@ endif(USE_BUNDLE AND NOT USE_BUNDLE_DIR)
 # Check that we have sqlite3 with FTS5
 
 if(NOT CMAKE_CROSSCOMPILING)
-  set(CMAKE_REQUIRED_FLAGS "--std=c++11")
+  set(CMAKE_REQUIRED_FLAGS "--std=c++17")
   set(CMAKE_REQUIRED_LIBRARIES ${QtCore_LIBRARIES} ${QtSql_LIBRARIES})
   check_cxx_source_runs("
     #include <QSqlDatabase>

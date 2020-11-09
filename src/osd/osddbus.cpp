@@ -33,6 +33,7 @@
 #include <QVariant>
 #include <QString>
 #include <QStringList>
+#include <QRegularExpression>
 #include <QImage>
 #include <QCoreApplication>
 #include <QVersionNumber>
@@ -141,6 +142,9 @@ void OSDDBus::ShowMessageNative(const QString &summary, const QString &message, 
   if (!interface_) return;
 
   QVariantMap hints;
+  QString summary_stripped = summary;
+  summary_stripped = summary_stripped.remove(QRegularExpression("[&\"<>]")).simplified();
+  QString message_stripped = message.toHtmlEscaped();
 
   if (!image.isNull()) {
     if (version_ >= QVersionNumber(1, 2)) {
@@ -163,7 +167,7 @@ void OSDDBus::ShowMessageNative(const QString &summary, const QString &message, 
     id = notification_id_;
   }
 
-  QDBusPendingReply<uint> reply = interface_->Notify(app_name(), id, icon, summary, message, QStringList(), hints, timeout_msec());
+  QDBusPendingReply<uint> reply = interface_->Notify(app_name(), id, icon, summary_stripped, message_stripped, QStringList(), hints, timeout_msec());
   QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
   connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(CallFinished(QDBusPendingCallWatcher*)));
 

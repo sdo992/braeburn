@@ -893,7 +893,11 @@ void CollectionModel::LazyPopulate(CollectionItem *parent, const bool signal) {
 }
 
 void CollectionModel::ResetAsync() {
-  QFuture<CollectionModel::QueryResult> future = QtConcurrent::run(std::bind(&CollectionModel::RunQuery, this, root_));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  QFuture<CollectionModel::QueryResult> future = QtConcurrent::run(&CollectionModel::RunQuery, this, root_);
+#else
+  QFuture<CollectionModel::QueryResult> future = QtConcurrent::run(this, &CollectionModel::RunQuery, root_);
+#endif
   NewClosure(future, this, SLOT(ResetAsyncQueryFinished(QFuture<CollectionModel::QueryResult>)), future);
 }
 
@@ -1567,8 +1571,9 @@ void CollectionModel::FinishItem(const GroupBy type, const bool signal, const bo
   // Create the divider entry if we're supposed to
   if (create_divider && show_dividers_) {
     QString divider_key = DividerKey(type, item);
-    if (!divider_key.isEmpty() && (item->sort_text.isEmpty() || item->sort_text[0].toLower() != divider_key || divider_key[0].isDigit()))
-      item->sort_text.prepend(divider_key);
+    if (!divider_key.isEmpty()) {
+      item->sort_text.prepend(divider_key + " ");
+    }
 
     if (!divider_key.isEmpty() && !divider_nodes_.contains(divider_key)) {
       if (signal)
@@ -1577,7 +1582,7 @@ void CollectionModel::FinishItem(const GroupBy type, const bool signal, const bo
       CollectionItem *divider = new CollectionItem(CollectionItem::Type_Divider, root_);
       divider->key = divider_key;
       divider->display_text = DividerDisplayText(type, divider_key);
-      divider->sort_text = divider_key + "0000";
+      divider->sort_text = divider_key + "  ";
       divider->lazy_loaded = true;
 
       divider_nodes_[divider_key] = divider;
